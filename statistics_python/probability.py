@@ -24,12 +24,3 @@ def combination(n,k):
         return permutation(n,k)/factorial(k)
     else:
         raise ValueError("n must be bigger or equal than k")
-    
-
-# print("computing factorial:", factorial(1))
-# print("computing permutation:", permutation(5,3))
-# print("computing combination:", combination(5,3))
-# print("computing binomial probability:", binomialProbability(5,0,0.1))
-# print("computing binomial distribution:", binomialDistribution(5,5, 0.1))
-# print("computing geometric distribution:", geometricDistribution(0.1,100))
-# print(PI)
