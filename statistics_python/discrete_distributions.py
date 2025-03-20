@@ -1,6 +1,14 @@
+"""
+Created on Wed Mar 12 18:34:49 2025
+
+@author: Cristopher Morales Ubal
+
+Module implementing classes for discrete distributions commonly used in statistics, probability, machine learning and others.
+
+"""
+
 from mathematics import exp
-from probability import factorial
-from probability import combination
+from combinatory import factorial, combination
 
 class Binomial():
 

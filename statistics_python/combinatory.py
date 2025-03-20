@@ -1,5 +1,11 @@
-#module for computing probability quantities
-#from mathematics import PI
+"""
+Created on Wed Mar 12 18:34:49 2025
+
+@author: Cristopher Morales Ubal
+
+Module for implementing combinatory quantities needed for probabilities distributions
+
+"""
 
 def checkInteger(x):
     if isinstance(x, int)!=True:

@@ -1,4 +1,12 @@
-#module for computing statistics indicators
+"""
+Created on Wed Mar 12 18:34:49 2025
+
+@author: Cristopher Morales Ubal
+
+Module for implementing statistics quantities requiered for statistical inference
+
+"""
+
 from mathematics import sqrt
 
 def mean_value(values=None):
@@ -27,9 +35,3 @@ def variance(values):
 
 def std_deviation(values):
     return sqrt(variance(values))
-    
-# print(mean_value([1,1,3,5,5]))
-# print(variance([1,1,3,5,5]))
-# print(std_deviation([1,1,3,5,5]))
-# #print(mean_value(1))
-# #print(mean_value([]))

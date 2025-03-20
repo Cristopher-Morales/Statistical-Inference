@@ -3,9 +3,11 @@
 Created on Wed Mar 12 18:34:49 2025
 
 @author: Cristopher Morales Ubal
+
+Module implementing mathematics functions and constants needed for probability, statistics and others
+
 """
-import numpy as np
-from probability import factorial
+from combinatory import factorial
 
 PI = 3.141592653589793
 EULER = 2.7182818282861687
@@ -24,9 +26,9 @@ def sine(x):
 
 def exp(x, n_sum=None, tol=None):
     if (n_sum==None):
-        n_sum = 60
+        n_sum = 90
     if (tol==None):
-        tol=10**-9
+        tol=10**-12
     exp_value=0
     for k in range(0,n_sum+1):
         exp_value_1 =exp_value+x**k/factorial(k)
@@ -39,11 +41,11 @@ def exp(x, n_sum=None, tol=None):
 
 def compute_pi(n_division=None):
     if n_division is None:
-        n_division=30
+        n_division=100
     h=1/n_division
     pi_value=0
     for i in range(0,n_division+1):
-        pi_value+=2*np.sqrt(1-(-1+i*2*h)**2)*2*h
+        pi_value+=2*sqrt(1-(-1+i*2*h)**2)*2*h
     return pi_value
 
 def sqrt(x,x_0=None, tol=None, n_max=None):
@@ -66,10 +68,18 @@ def sqrt(x,x_0=None, tol=None, n_max=None):
             print("maximum number of iterations has been reached, with an error: ", error)
     return x_0
 
-# print(sqrt(0.5))
-# print(sqrt(25))
-# print(cosine(np.pi), np.cos(np.pi))
-# print(sine(np.pi/2), np.sin(np.pi/2))
-# print(exp(1), np.exp(1))
-# print(len([1,2,3]))
-# print(compute_pi(100000), np.pi)
+def compute_integral_exp2(x, n_sum=None, tol=None):
+    if (n_sum==None):
+        n_sum = 90
+    if (tol==None):
+        tol=10**-12
+    exp_value=0
+    for k in range(0,n_sum+1):
+        exp_value_1 =exp_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k)*2**k)
+        error = abs(exp_value_1-exp_value)
+        if (tol<=error):
+            exp_value=exp_value_1
+        else:
+            break
+    return exp_value
+
