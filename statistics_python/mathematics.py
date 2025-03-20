@@ -73,13 +73,13 @@ def compute_integral_exp2(x, n_sum=None, tol=None):
         n_sum = 90
     if (tol==None):
         tol=10**-12
-    exp_value=0
+    int_value=0
     for k in range(0,n_sum+1):
-        exp_value_1 =exp_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k)*2**k)
-        error = abs(exp_value_1-exp_value)
+        int_value_1 =int_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k)*2**k)
+        error = abs(int_value_1-int_value)
         if (tol<=error):
-            exp_value=exp_value_1
+            int_value=int_value_1
         else:
             break
-    return exp_value
+    return int_value
 
