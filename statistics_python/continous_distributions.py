@@ -7,7 +7,7 @@ Module implementing classes for continuous distributions commonly used in statis
 
 """
 
-from mathematics import PI, exp, sqrt, compute_integral_exp2
+from mathematics import PI, exp, sqrt, compute_integral_exp2, gamma
 
 class Uniform():
 
@@ -94,4 +94,29 @@ class Normal():
             return 0
         else:
             return Normal.Distribution(self,y)-Normal.Distribution(self,x)
+
+class Gamma():
+
+    def __init__(self, alpha, beta=None):
+        if(alpha is None):
+            raise ValueError("alpha parameter must be an positive integer or half-integer")
+        if(beta is None):
+            print("\n beta values is initialized to 1.0")
+            self.beta=1.0
+        self.alpha = alpha
+        self.beta = beta
+        self.expectedValue = self.alpha/self.beta
+        self.variance=self.expectedValue/beta
+        self.gammaFactor = self.beta**self.alpha/gamma(self.alpha)
+
+    def Density(self, x):
+        return self.gammaFactor * exp(-self.beta * x)*x**(self.alpha-1.0)
+
+class chiSquared(Gamma):
+
+    def __init__(self, n):
+        if (isinstance(n,int)==False or n<=0):
+            raise ValueError(str(n)+" must be an integer bigger than zero")
+        return super().__init__(n, 0.5)
+        
     

@@ -7,10 +7,27 @@ Created on Wed Mar 12 18:34:49 2025
 Module implementing mathematics functions and constants needed for probability, statistics and others
 
 """
-from combinatory import factorial
 
 PI = 3.141592653589793
 EULER = 2.7182818282861687
+
+def checkInteger(x):
+    if (2*x-int(2*x))!= 0.0:
+        raise ValueError(str(x)+" must be a non-negative integer or a half-integer n/2!!")
+
+def factorial(k):
+    checkInteger(k)
+    if k>=1/2:
+        return k*factorial(k-1)
+    elif (k==0):
+        return 1
+    elif (k==-1/2):
+        return sqrt(PI)
+    else:
+        raise ValueError("Number must a non-negative integer or a half-integer n/2!!")
+    
+def gamma(k):
+    return factorial(k-1)
 
 def cosine(x):
     cosine_value=0

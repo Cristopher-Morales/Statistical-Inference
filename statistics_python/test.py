@@ -4,6 +4,7 @@ from stats import mean_value
 from combinatory import *
 from discrete_distributions import *
 from continous_distributions import *
+from mathematics import PI, sqrt, factorial, gamma
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -15,15 +16,24 @@ class TestStats(unittest.TestCase):
 
 class TestProb(unittest.TestCase):
 
-    def test_factorial(self):
-        print("\nTesting factorial...")
-        self.assertEqual(factorial(1),1)
     def test_permutation(self):
         print("\nTesting permutation...")
         self.assertEqual(permutation(5,3),60)
     def test_combination(self):
         print("\nTesting combination...")
         self.assertEqual(combination(5,3),10)
+
+class TestMath(unittest.TestCase):
+
+    def test_factorial(self):
+        print("\nTesting factorial...")
+        self.assertEqual(factorial(1),1)
+        self.assertEqual(factorial(3),6)
+    def test_gamma(self):
+        print("\nTesting Gamma...")
+        self.assertEqual(gamma(1/2), sqrt(PI))
+        self.assertEqual(gamma(3/2),0.5*sqrt(PI))
+        self.assertEqual(gamma(5/2),(3/4)*sqrt(PI))
 
 class TestBinomial(unittest.TestCase):
     
