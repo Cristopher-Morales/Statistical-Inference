@@ -69,7 +69,7 @@ class Exponential():
 class Normal():
 
     def __init__(self, mean=None, variance=None):
-        if (variance<0):
+        if (variance !=None and variance<0):
             raise ValueError("Variance "+str(variance)+" must be a positive value.")
         if (mean is None or variance is None):
             mean = 0.0
@@ -98,15 +98,17 @@ class Normal():
 class Gamma():
 
     def __init__(self, alpha, beta=None):
-        if(alpha is None):
+        if(alpha is None or (2*alpha-int(2*alpha)!=0)):
             raise ValueError("alpha parameter must be an positive integer or half-integer")
+        else:
+            self.alpha= alpha
         if(beta is None):
             print("\n beta values is initialized to 1.0")
             self.beta=1.0
-        self.alpha = alpha
-        self.beta = beta
+        else:
+            self.beta=beta
         self.expectedValue = self.alpha/self.beta
-        self.variance=self.expectedValue/beta
+        self.variance=self.expectedValue/self.beta
         self.gammaFactor = self.beta**self.alpha/gamma(self.alpha)
 
     def Density(self, x):
