@@ -3,7 +3,7 @@ import unittest
 from stats import mean_value
 from combinatory import *
 from discrete_distributions import *
-from continous_distributions import *
+from continuous_distributions import *
 from mathematics import PI, sqrt, factorial, gamma
 
 class TestStats(unittest.TestCase):

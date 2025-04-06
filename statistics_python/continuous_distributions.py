@@ -38,7 +38,7 @@ class Uniform():
         elif x==y :
             return 0
         else:
-            return Uniform.Distribution(self,y)-Uniform.Distribution(self,x)
+            return self.Distribution(y)-self.Distribution(x)
 
 class Exponential():
 
@@ -64,7 +64,7 @@ class Exponential():
         elif x==y :
             return 0
         else:
-            return Exponential.Distribution(self,y)-Exponential.Distribution(self,x)
+            return self.Distribution(y)-self.Distribution(x)
 
 class Normal():
 
@@ -93,7 +93,7 @@ class Normal():
         elif x==y :
             return 0
         else:
-            return Normal.Distribution(self,y)-Normal.Distribution(self,x)
+            return self.Distribution(y)-self.Distribution(x)
 
 class Gamma():
 
@@ -119,6 +119,6 @@ class chiSquared(Gamma):
     def __init__(self, n):
         if (isinstance(n,int)==False or n<=0):
             raise ValueError(str(n)+" must be an integer bigger than zero")
-        return super().__init__(n, 0.5)
+        super().__init__(n/2, 0.5)
         
     

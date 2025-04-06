@@ -33,7 +33,7 @@ class Binomial():
             raise ValueError(str(x)+" must be an integer bigger or equal than 0")
         prob = 0
         for k in range(0,min(self.n+1,x+1)):
-            prob+= Binomial.MassProbability(self, k)
+            prob+= self.MassProbability(k)
         return prob
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
@@ -41,9 +41,9 @@ class Binomial():
         elif (a>=b):
             raise ValueError(str(a)+" must be smaller than b, if "+str(a)+"="+str(b)+" use poissonMassProbability method")
         if a>0:
-            return Binomial.Distribution(self,b)-Binomial.Distribution(self, a-1)
+            return self.Distribution(b)-self.Distribution(a-1)
         else:
-            return Binomial.Distribution(self,b)
+            return self.Distribution(b)
 
 class Geometric:
     def __init__(self, geometric_param):
@@ -61,7 +61,7 @@ class Geometric:
             raise ValueError(str(x)+" must be an integer bigger or equal than 1")
         prob = 0
         for k in range(1,x+1):
-            prob+= Geometric.MassProbability(self, k)
+            prob+= self.MassProbability(k)
         return prob
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
@@ -69,9 +69,9 @@ class Geometric:
         elif (a>=b):
             raise ValueError(str(a)+" must be smaller than b, if "+str(a)+"="+str(b)+" use poissonMassProbability method")
         if a>1:
-            return Geometric.Distribution(self,b)-Geometric.Distribution(self, a-1)
+            return self.Distribution(b)-self.Distribution(a-1)
         else:
-            return Geometric.Distribution(self,b)
+            return self.Distribution(b)
 
 class NegBinomial:
     def __init__(self, r, p):
@@ -92,7 +92,7 @@ class NegBinomial:
             raise ValueError(str(x)+" must be an integer bigger or equal than the wanted success "+str(self.r))
         prob = 0
         for k in range(self.r,x+1):
-            prob+= NegBinomial.MassProbability(self, k)
+            prob+= self.MassProbability(k)
         return prob
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
@@ -100,9 +100,9 @@ class NegBinomial:
         elif (a>=b):
             raise ValueError(str(a)+" must be smaller than b, if "+str(a)+"="+str(b)+" use poissonMassProbability method")
         if a>self.r:
-            return NegBinomial.Distribution(self,b)-NegBinomial.Distribution(self, a-1)
+            return self.Distribution(b)-self.Distribution(a-1)
         else:
-            return NegBinomial.Distribution(self,b)
+            return self.Distribution(b)
 
 class Poisson:
     def __init__(self, poison_param):
@@ -120,7 +120,7 @@ class Poisson:
             raise ValueError(str(x)+" must be an integer bigger or equal than zero")
         prob = 0
         for k in range(0,x+1):
-            prob+= Poisson.MassProbability(self, k)
+            prob+= self.MassProbability(k)
         return prob
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
@@ -128,7 +128,7 @@ class Poisson:
         elif (a>=b):
             raise ValueError(str(a)+" must be smaller than b, if "+str(a)+"="+str(b)+" use poissonMassProbability method")
         if a>0:
-            return Poisson.Distribution(self,b)-Poisson.Distribution(self, a-1)
+            return self.Distribution(b)-self.Distribution(a-1)
         else:
-            return Poisson.Distribution(self,b)
+            return self.Distribution(b)
     
