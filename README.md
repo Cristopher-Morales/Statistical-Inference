@@ -39,10 +39,6 @@ The notes are based on standard statistical texts and literature. Specific refer
 
 ### Work in progress
 
-    Add R scripts for practical exercises
-
-    Add Python scripts for simulations and demonstrations
-
     Expand notes to include advanced topics such as Bayesian inference and multivariate analysis
 
 ### Intended Audience
