@@ -7,7 +7,7 @@ Additionally, **R and Python scripts** will be added over time to provide **prac
 
 ---
 
-## Contenido del Repositorio / Repository Contents
+## Repository Contents
 
 ### Notes
 - `statistical_theory/`  
@@ -22,7 +22,7 @@ Additionally, **R and Python scripts** will be added over time to provide **prac
 
 ---
 
-## Estructura del Repositorio / Repository Structure
+## Repository Structure
 
 ```text
 Statistical-Inference/
@@ -33,11 +33,11 @@ Statistical-Inference/
 └── LICENSE
 ```
 
-### Referencias / References
+### References
 
 The notes are based on standard statistical texts and literature. Specific references are listed in the corresponding notes.
 
-### Próximos pasos / Future Work
+### Work in progress
 
     Add R scripts for practical exercises
 
@@ -45,7 +45,7 @@ The notes are based on standard statistical texts and literature. Specific refer
 
     Expand notes to include advanced topics such as Bayesian inference and multivariate analysis
 
-### Intended Audience / Audiencia
+### Intended Audience
 
     Undergraduate and graduate students in statistics, data science, or related fields
 
@@ -59,6 +59,6 @@ The notes are based on standard statistical texts and literature. Specific refer
 
     The repository is intended as a study and reference tool, not as a replacement for textbooks or peer-reviewed literature.
 
-### License / Licencia
+### License
 
 This repository is distributed under the GNU General Public License v3.0 (GPL-3.0).
