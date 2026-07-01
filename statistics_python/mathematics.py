@@ -41,11 +41,7 @@ def sine(x):
         sine_value+=(-1)**k*x**(2*k+1)/factorial(2*k+1)
     return sine_value
 
-def exp(x, n_sum=None, tol=None):
-    if (n_sum==None):
-        n_sum = 90
-    if (tol==None):
-        tol=10**-12
+def exp(x, n_sum=90, tol=10**-12):
     exp_value=0
     for k in range(0,n_sum+1):
         exp_value_1 =exp_value+x**k/factorial(k)
@@ -65,14 +61,10 @@ def compute_pi(n_division=None):
         pi_value+=2*sqrt(1-(-1+i*2*h)**2)*2*h
     return pi_value
 
-def sqrt(x,x_0=None, tol=None, n_max=None):
+def sqrt(x,x_0=None, tol=10**-6, n_max=10):
     if (x<0):
         raise ValueError(str(x)+" must be a positive value")
-    if (tol == None):
-        tol = 10**-6
-    if (n_max ==None):
-        n_max = 10
-    if (x_0 == None):
+    if (x_0 is None):
         x_0=x/2
     error = 1
     n_iteration=1
@@ -85,11 +77,7 @@ def sqrt(x,x_0=None, tol=None, n_max=None):
             print("maximum number of iterations has been reached, with an error: ", error)
     return x_0
 
-def compute_integral_exp2(x, n_sum=None, tol=None):
-    if (n_sum==None):
-        n_sum = 90
-    if (tol==None):
-        tol=10**-12
+def compute_integral_exp2(x, n_sum=90, tol=10**-12):
     int_value=0
     for k in range(0,n_sum+1):
         int_value_1 =int_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k)*2**k)
