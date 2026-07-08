@@ -12,15 +12,16 @@ from combinatory import factorial, combination
 
 class Binomial():
 
-    def __init__(self,n,p):
-        if (isinstance(n,int)!= True or n<0):
-            raise TypeError(str(n)+" must be a positive integer bigger than zero")
-        if (p<0 or p>1):
-            raise ValueError(str(p)+" must a valid probability between zero and one")
-        self.n=n
-        self.p=p
-        self.expectedValue= n*p
-        self.variance= n*p*(1-p)
+    def __init__(self,n_trials,prob):
+        if (isinstance(n_trials,int)!= True or n_trials<0):
+            raise TypeError(str(n_trials)+" must be a positive integer bigger than zero")
+        if (prob<0 or prob>1):
+            raise ValueError(str(prob)+" must a valid probability between zero and one")
+        self.n=n_trials
+        self.p=prob
+        self.expectedValue= self.n*self.p
+        self.variance= self.n*self.p*(1-self.p)
+    
     def MassProbability(self, x):
         if isinstance(x,int)!= True or x < 0:
             raise ValueError(str(x)+" must be an integer bigger or equal than 0")
@@ -28,6 +29,7 @@ class Binomial():
             return combination(self.n,x)*(self.p**x)*(1-self.p)**(self.n-x)
         else:
             raise ValueError(str(x)+" must be equal or smaller than the number of trials "+str(self.n))
+    
     def Distribution(self,x):
         if isinstance(x,int)!= True:
             raise ValueError(str(x)+" must be an integer bigger or equal than 0")
@@ -35,6 +37,7 @@ class Binomial():
         for k in range(0,min(self.n+1,x+1)):
             prob+= self.MassProbability(k)
         return prob
+    
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
             raise ValueError(str(a)+","+str(b)+" must be integers bigger or equal than zero, and "+str(a)+"<"+str(b))
@@ -52,10 +55,12 @@ class Geometric:
         self.geometric_param=geometric_param
         self.expectedValue= 1.0/geometric_param
         self.variance= (1.0 - geometric_param ) / geometric_param**2
+    
     def MassProbability(self, x):
         if isinstance(x,int)!= True or x < 1:
             raise ValueError(str(x)+" must be an integer bigger or equal than 1")
         return self.geometric_param * (1-self.geometric_param)**(x-1)
+    
     def Distribution(self,x):
         if isinstance(x,int)!= True:
             raise ValueError(str(x)+" must be an integer bigger or equal than 1")
@@ -63,6 +68,7 @@ class Geometric:
         for k in range(1,x+1):
             prob+= self.MassProbability(k)
         return prob
+    
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
             raise ValueError(str(a)+","+str(b)+" must be integers bigger or equal than 1, and "+str(a)+"<"+str(b))
@@ -74,19 +80,21 @@ class Geometric:
             return self.Distribution(b)
 
 class NegBinomial:
-    def __init__(self, r, p):
-        if (isinstance(r,int)!= True or r<1):
-            raise TypeError("the number of success wanted "+str(r)+" must be a positive integer bigger or equal than one")
-        if (p<0 or p>1):
-            raise ValueError(str(p)+" must a valid probability between zero and one")
-        self.r = r
-        self.p = p
+    def __init__(self, n_success, prob):
+        if (isinstance(n_success,int)!= True or n_success<1):
+            raise TypeError("the number of success wanted "+str(n_success)+" must be a positive integer bigger or equal than one")
+        if (prob<0 or prob>1):
+            raise ValueError(str(prob)+" must a valid probability between zero and one")
+        self.r = n_success
+        self.p = prob
         self.expectedValue= self.r*(1-self.p)/self.p
         self.variance= self.expectedValue/self.p
+    
     def MassProbability(self, x):
         if isinstance(x,int)!= True or x < self.r:
             raise ValueError(str(x)+" must be an integer bigger or equal than the number of success wanted "+str(self.r))
         return combination(x-1, self.r-1) *self.p**self.r * (1-self.p)**(x-self.r)
+    
     def Distribution(self,x):
         if isinstance(x,int)!= True:
             raise ValueError(str(x)+" must be an integer bigger or equal than the wanted success "+str(self.r))
@@ -94,6 +102,7 @@ class NegBinomial:
         for k in range(self.r,x+1):
             prob+= self.MassProbability(k)
         return prob
+    
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
             raise ValueError(str(a)+","+str(b)+" must be integers bigger or equal than 1, and "+str(a)+"<"+str(b))
@@ -111,10 +120,12 @@ class Poisson:
         self.poison_param=poison_param
         self.expectedValue= poison_param
         self.variance= poison_param
+    
     def MassProbability(self, x):
         if isinstance(x,int)!= True:
             raise ValueError(str(x)+" must be an integer bigger or equal than zero")
         return exp(-1* self.poison_param) * self.poison_param**x / factorial(x)
+    
     def Distribution(self,x):
         if isinstance(x,int)!= True:
             raise ValueError(str(x)+" must be an integer bigger or equal than zero")
@@ -122,6 +133,7 @@ class Poisson:
         for k in range(0,x+1):
             prob+= self.MassProbability(k)
         return prob
+    
     def Probability(self,a,b):
         if isinstance(a,int)!= True  or isinstance(b,int)!=True:
             raise ValueError(str(a)+","+str(b)+" must be integers bigger or equal than zero, and "+str(a)+"<"+str(b))

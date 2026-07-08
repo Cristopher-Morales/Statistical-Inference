@@ -20,11 +20,13 @@ class Uniform():
         self.b=b
         self.expectedValue= (a+b)/2
         self.variance= (b-a)**2/12
+    
     def Density(self, x):
         if (x<=self.a or x>=self.b):
             return 0
         else:
             return 1.0/(self.b-self.a)
+    
     def Distribution(self,x):
         if x<self.a:
             return 0
@@ -32,6 +34,7 @@ class Uniform():
             return (x-self.a)/(self.b-self.a)
         else:
             return 1
+    
     def Probability(self,x,y):
         if x>y:
             raise ValueError(str(x)+" must be smaller than " +str(y))
@@ -48,16 +51,19 @@ class Exponential():
         self.param_lambda=param_lambda
         self.expectedValue= param_lambda
         self.variance= param_lambda**2
+    
     def Density(self, x):
         if (x<0):
             return 0
         else:
             return 1.0/self.param_lambda * exp(-x/self.param_lambda)
+    
     def Distribution(self,x):
         if x<0:
             return 0
         else:
             return 1.0 - exp(-x/self.param_lambda)
+    
     def Probability(self,x,y):
         if x>y:
             raise ValueError(str(x)+" must be smaller than " +str(y))
@@ -83,11 +89,13 @@ class Normal():
 
     def Density(self, x):
         return self.normalFactor * exp(-0.5*((x-self.mean)/self.standardDeviation)**2)
+    
     def Distribution(self,x):
         if x>=0:
             return 0.5 + self.normalFactor*compute_integral_exp2((x-self.mean)/self.standardDeviation)
         else:
             return 0.5 - self.normalFactor*compute_integral_exp2(-1.0*(x-self.mean)/self.standardDeviation)
+    
     def Probability(self,x,y):
         if x>y:
             raise ValueError(str(x)+" must be smaller than " +str(y))
