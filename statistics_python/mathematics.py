@@ -8,7 +8,7 @@ Module implementing mathematics functions and constants needed for probability, 
 
 """
 
-PI = 3.141592653589793
+PI = 3.1415926535897932
 EULER = 2.7182818282861687
 
 def checkInteger(x):
@@ -16,29 +16,56 @@ def checkInteger(x):
         raise ValueError(str(x)+" must be a non-negative integer or a half-integer n/2!!")
 
 def factorial(k):
+    # check that k must be a non-negative integer or a half-integer
     checkInteger(k)
-    if k>=1/2:
-        return k*factorial(k-1)
-    elif (k==0):
-        return 1
-    elif (k==-1/2):
-        return sqrt(PI)
+    n=k
+    # define a flag for dealing with case when k=(2n-1)/2 is half of an integer value
+    k_NonInT=False
+    if (int(k)- n)!=0:
+        # recompute n based of the hal-integer value k
+        n=int((2*k+1)//2)
+        # enable flag for half-integer values
+        k_NonInT=True
     else:
-        raise ValueError("Number must a non-negative integer or a half-integer n/2!!")
+        # for k to be integer( not a float)
+        n=int(k)
+    # Memoization, use list of size n+1 ([f[0],f[1],....,f[n]])
+    F=[0]*(n+1)
+    #  Handle base-Cases
+    if k_NonInT:
+        F[0]=sqrt(PI)
+    else:
+        F[0]=1
+    # Filling up list to be look up
+    for i in range(1,n+1):
+        if k_NonInT:
+            F[i]=((2*i-1)/2)*F[i-1]
+        else:
+            F[i]=i*F[i-1]
+    
+    return F[n]
     
 def gamma(k):
     return factorial(k-1)
 
-def cosine(x):
+def cosine(x, n_sum=90, tol=10**-12):
     cosine_value=0
-    for k in range(0,31):
-        cosine_value+=(-1)**k*x**(2*k)/factorial(2*k)
+    for k in range(0,n_sum):
+        cosine_value_1=cosine_value+(-1)**k*x**(2*k)/factorial(2*k)
+        if abs(cosine_value_1-cosine_value)>tol:
+            cosine_value=cosine_value_1
+        else:
+            break
     return cosine_value
 
-def sine(x):
+def sine(x, n_sum=90, tol=10**-12):
     sine_value=0
-    for k in range(0,31):
-        sine_value+=(-1)**k*x**(2*k+1)/factorial(2*k+1)
+    for k in range(0,n_sum):
+        sine_value_1=sine_value+(-1)**k*x**(2*k+1)/factorial(2*k+1)
+        if abs(sine_value_1-sine_value)>tol:
+            sine_value=sine_value_1
+        else:
+            break
     return sine_value
 
 def exp(x, n_sum=90, tol=10**-12):
@@ -87,4 +114,3 @@ def compute_integral_exp2(x, n_sum=90, tol=10**-12):
         else:
             break
     return int_value
-

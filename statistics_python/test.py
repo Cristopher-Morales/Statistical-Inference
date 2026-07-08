@@ -6,7 +6,7 @@ from stats import mean_value
 from combinatory import *
 from discrete_distributions import *
 from continuous_distributions import *
-from mathematics import PI, sqrt, factorial, gamma
+from mathematics import PI, sqrt, factorial, gamma, sine, cosine
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -36,6 +36,12 @@ class TestMath(unittest.TestCase):
         self.assertEqual(gamma(1/2), sqrt(PI))
         self.assertEqual(gamma(3/2),0.5*sqrt(PI))
         self.assertEqual(gamma(5/2),(3/4)*sqrt(PI))
+    def test_sine(self):
+        print("\nTesting sine function...")
+        self.assertAlmostEqual(sine(PI/2,tol=10**-20, n_sum=1000),1.0,delta=3*10**-16)
+    def test_cosine(self):
+        print("\nTesting cosine function...")
+        self.assertAlmostEqual(cosine(PI/2,tol=10**-20, n_sum=1000),0.0,delta=3*10**-16)
 
 class TestBinomial(unittest.TestCase):
     
@@ -105,6 +111,7 @@ class TestNegBinomial(unittest.TestCase):
     def test_negBinomialProbability(self):
         print("\nTesting negative binomial probability within an interval unit test...")
         self.assertEqual(self.negBinomial.Probability(1,2), 0.19)
+
 class TestPoisson(unittest.TestCase):
     
     @classmethod
