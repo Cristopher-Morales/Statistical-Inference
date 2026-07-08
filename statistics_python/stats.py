@@ -15,9 +15,9 @@ def mean_value(values=None):
     '''
     '''start checks'''
     if (values==None or values==[]):
-        raise ValueError("argument must be a non-empty list")
+        raise ValueError("argument must be a non-empty list of numbers or a single numerical value")
     elif(type(values)==str):
-        raise TypeError("argument must be a list or a number")
+        raise TypeError("argument must be a list of numbers or a single number")
     elif(type(values)==float or type(values)==int):
         values=[values]
     n = len(values)
