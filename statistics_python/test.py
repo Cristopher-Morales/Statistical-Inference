@@ -43,7 +43,7 @@ class TestBinomial(unittest.TestCase):
     def setUpClass(cls):
         return super().setUpClass()
     def setUp(self):
-        self.binomial = Binomial(5,0.1)
+        self.binomial = Binomial(prob=0.1,n_trials=5)
         return super().setUp()
     @classmethod
     def tearDownClass(cls):
