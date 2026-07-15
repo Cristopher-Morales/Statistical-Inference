@@ -32,16 +32,3 @@ def GauusSeidel_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_in
             break
         n_count+=1
     return x_1, n_count, error
-
-A_1=[[12,3,-5], [1,5,3], [3,7,13]]
-# print(len(A_1))
-x_1=[1, 2, 4, 8]
-x_0= [-1, 3, 9, -27]
-# abs_values=[abs(i-j) for i,j in zip(x_1,x_0) ]
-# print(max(abs_values))
-b_1=[1,28,76]
-# print(A_1[0][1:])
-x_sol,n_count,error=GauusSeidel_Method(A=A_1,b=b_1, x_initial=[1,0,1], n_max_iter=10)
-print(x_sol)
-print(n_count,error)
-# print(max([abs(i-j) for i,j in zip(x_1,x_0)]))
