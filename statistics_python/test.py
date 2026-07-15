@@ -6,7 +6,8 @@ from stats import mean_value
 from combinatory import *
 from discrete_distributions import *
 from continuous_distributions import *
-from mathematics import PI, sqrt, factorial, gamma, sine, cosine
+from mathematics import PI, sqrt, factorial, gamma, sine, cosine, dotProduct
+from iterative_methods import GauusSeidel_Method
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -42,6 +43,17 @@ class TestMath(unittest.TestCase):
     def test_cosine(self):
         print("\nTesting cosine function...")
         self.assertAlmostEqual(cosine(PI/2,tol=10**-20, n_sum=1000),0.0,delta=3*10**-16)
+    def test_dotProduct(self):
+        print("\nTesting dot product...")
+        self.assertEqual(dotProduct([1,1,1,1],[1,2,3,4]),10)
+
+class TestIterativeMethods(unittest.TestCase):
+
+    def test_GaussSeidel(self):
+        print("\nTest Gauss Seidel Method...")
+        A_1=[[12,3,-5], [1,5,3], [3,7,13]]
+        b_1=[1,28,76]
+        self.assertEqual(GauusSeidel_Method(A=A_1,b=b_1, x_initial=[1,0,1], n_max_iter=10)[0],[1.0000022061063778, 2.9999988404211484, 4.000000115287141])
 
 class TestBinomial(unittest.TestCase):
     
