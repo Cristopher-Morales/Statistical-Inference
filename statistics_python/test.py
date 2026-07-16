@@ -7,7 +7,7 @@ from combinatory import *
 from discrete_distributions import *
 from continuous_distributions import *
 from mathematics import PI, sqrt, factorial, gamma, sine, cosine, dotProduct
-from iterative_methods import GauusSeidel_Method
+from iterative_methods import GauusSeidel_Method, Jacobi_Method
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -54,6 +54,13 @@ class TestIterativeMethods(unittest.TestCase):
         A_1=[[12,3,-5], [1,5,3], [3,7,13]]
         b_1=[1,28,76]
         self.assertEqual(GauusSeidel_Method(A=A_1,b=b_1, x_initial=[1,0,1], n_max_iter=10)[0],[1.0000022061063778, 2.9999988404211484, 4.000000115287141])
+
+    def test_Jacobi(self):
+        print("\nTest Jacobi method...")
+        A_1=[[12,3,-5], [1,5,3], [3,7,13]]
+        b_1=[1,28,76]
+        self.assertEqual(Jacobi_Method(A=A_1,b=b_1, x_initial=[1,0,1], n_max_iter=30)[0],[1.0000000431288647, 2.999999753685029, 3.9999997092977795])
+
 
 class TestBinomial(unittest.TestCase):
     
