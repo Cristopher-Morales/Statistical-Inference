@@ -116,7 +116,7 @@ def compute_integral_exp2(x, n_sum=90, tol=10**-12):
     return int_value
 
 def dotProduct(x:list, y:list)->float:
-    assert len(x)==len(y), "list of number does not have the same length!!"
+    assert len(x)==len(y), f'list of number does not have the same length ({len(x)} != {len(y)})!! '
     assert all(type(x[i])==int or type(x[i])==float for i in range(len(x))), "list x must be a list of numbers"
     assert all(type(y[i])==int or type(y[i])==float for i in range(len(y))), "list y must be a list of numbers"
     x_dot_y=0
