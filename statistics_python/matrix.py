@@ -7,7 +7,7 @@ class Matrix():
         assert (rows>0 and columns>0),"rows and colums must be positive integers!"
         self.m=rows
         self.n=columns
-        self.Matrix=self.Matrix = [[init_value] * self.n for _ in range(self.m)]
+        self.Matrix= [[init_value] * self.n for _ in range(self.m)]
     
     def __setitem__(self, position, values):
         if isinstance(position,int) and 0<=position<self.m:
@@ -25,13 +25,59 @@ class Matrix():
     
     def __getitem__(self, position):
         if isinstance(position,int):
-            assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
-            return self.Matrix[position]
+            # assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
+            if self.m>1:
+                assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
+                A_=Matrix(1,self.n)
+                A_[0]=self.Matrix[position]
+                return A_
+            else:
+                assert 0<=position<self.n, f'out of bounds for 1-row matrix with {self.n} columns ({position})'
+                return self.Matrix[0][position]
         elif isinstance(position,tuple):
             i,j=position
-            assert isinstance(i,int) and 0<=i<self.m, f'{i} must be a positive integer bigger or equal than 0 and smaller than number of rows {self.m}'
-            assert isinstance(j,int) and 0<=j<self.n, f'{j} must be a positive integer bigger or equal than 0 and smaller than number of columns {self.n}'
-            return self.Matrix[i][j]
+            if not isinstance(j,slice) and not isinstance(i,slice):
+                assert isinstance(i,int) and 0<=i<self.m, f'{i} must be a positive integer bigger or equal than 0 and smaller than number of rows {self.m}'
+                assert isinstance(j,int) and 0<=j<self.n, f'{j} must be a positive integer bigger or equal than 0 and smaller than number of columns {self.n}'
+                return self.Matrix[i][j]
+            else:
+                if isinstance(j,slice) and isinstance(i,slice):
+                    i_start = 0 if i.start is None else i.start
+                    i_stop = self.m if i.stop is None else i.stop
+                    j_start = 0 if j.start is None else j.start
+                    j_stop = self.n if j.stop is None else j.stop
+                    assert 0<=i_start<self.m and 0<=i_stop<=self.m, f'indexes for row slice are out of bound ({i_start}:{i_stop}) '
+                    assert 0<=j_start<self.m and 0<=j_start<=self.n, f'indexes for column slice are out of bound ({j_start}:{j_stop}) '
+                    assert i_start<i_stop, f'start index must be smaller than end index for row slice ({i_start}<{i_stop}) '
+                    assert j_start<j_stop, f'start index must be smaller than end index for row slice ({j_start}<{j_stop}) '
+                    m,n=i_stop-i_start, j_stop-j_start
+                    A_=Matrix(m,n)
+                    for i in range(0,m):
+                        for j in range(0,n):
+                            A_[i,j]=A[i_start+i,j_start+j]
+                    return A_
+                elif isinstance(i,slice):
+                    assert isinstance(j, int) and 0<=j<self.n, f'{j} must be a valid positive integer and smaller than {self.m}.'
+                    i_start = 0 if i.start is None else i.start
+                    i_stop = self.m if i.stop is None else i.stop
+                    assert 0<=i_start<self.m and 0<=i_stop<=self.m, f'indexes for row slice are out of bound ({i_start}:{i_stop}) '
+                    assert i_start<i_stop, f'start index must be smaller than end index for row slice ({i_start}<{i_stop}) '
+                    m,n=i_stop-i_start, 1
+                    A_=Matrix(m,n)
+                    for i in range(0,m):
+                        A_[i,0]=A[i_start+i,j]
+                    return A_
+                elif isinstance(j,slice):
+                    assert isinstance(i, int) and 0<=i<self.m, f'{i} must be a valid positive integer and smaller than {self.m}.'
+                    j_start = 0 if j.start is None else j.start
+                    j_stop = self.n if j.stop is None else j.stop
+                    assert 0<=j_start<self.n and 0<=j_stop<=self.n, f'indexes for row slice are out of bound ({j_start}:{j_stop}) '
+                    assert j_start<j_stop, f'start index must be smaller than end index for row slice ({j_start}<{j_stop}) '
+                    m,n=1,j_stop-j_start
+                    A_=Matrix(m,n)
+                    for j in range(0,n):
+                        A_[0,j]=A[i,j_start+j]
+                    return A_
         else:
             raise ValueError(f'{position} is an invalid argument for getting a row or element in a matrix')
     
@@ -62,7 +108,8 @@ class Matrix():
         elif isinstance(other,(float,int)):
             C=Matrix(self.m, self.n)
             for i in range(self.m):
-                C[i] = [other * value for value in self[i]]
+                for j in range(self.n):
+                    C[i,j] = other * self[i,j]
             return C
         else:
             raise ValueError(f'invalid multiply operation with {other}')
@@ -72,6 +119,19 @@ class Matrix():
     
     def __str__(self):
         return f'{self.Matrix}'
+    
+    def __repr__(self):
+        return self.Matrix
+    
+    def __len__(self):
+        assert self.m==1 or self.n==1, f'len() method only available for single row-matrix or single row-column, uses .shape() method for getting matrix dimension'
+        if self.m==1:
+            return self.n
+        else:
+            return self.m
+    
+    def shape(self):
+        return self.m, self.n
 
     def transpose(self):
         A_t=Matrix(self.n,self.m)
