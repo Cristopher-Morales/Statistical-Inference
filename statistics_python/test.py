@@ -8,6 +8,7 @@ from discrete_distributions import *
 from continuous_distributions import *
 from mathematics import PI, sqrt, factorial, gamma, sine, cosine, dotProduct
 from iterative_methods import GauusSeidel_Method, Jacobi_Method
+from matrix import Matrix
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -61,6 +62,38 @@ class TestIterativeMethods(unittest.TestCase):
         b_1=[1,28,76]
         self.assertEqual(Jacobi_Method(A=A_1,b=b_1, x_initial=[1,0,1], n_max_iter=30)[0],[1.0000000431288647, 2.999999753685029, 3.9999997092977795])
 
+class TestMatrix(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        return super().setUpClass()
+    def setUp(self):
+        self.A=Matrix(3,2)
+        self.A[0]=[3,2]
+        self.A[1]=[4,5]
+        self.B=Matrix(3,2)
+        self.B[2]=[1,1]
+        self.D=Matrix(2,3, init_value=1)
+        return super().setUp()
+    @classmethod
+    def tearDownClass(cls):
+        return super().tearDownClass()
+    def tearDown(self):
+        return super().tearDown()
+    def test_MatrixAdd(self):
+        print("\nTesting Matrix addition...")
+        self.assertEqual((self.A+self.B).Matrix, [[3, 2], [4, 5], [1, 1]])
+    def test_MatrixMult(self):
+        print("\nTesting Matrix multiplication...")
+        self.assertEqual((self.D*self.A).Matrix, [[7, 7], [7, 7]])
+    def test_MatrixTranspose(self):
+        print("\nTesting Matrix transpose...")
+        self.assertEqual((self.A.transpose()).Matrix, [[3, 4, 0], [2, 5, 0]])
+    def test_ScalarMult(self):
+        print("\nTesting Matrix Scalar multiplication...")
+        self.assertEqual((3*self.A).Matrix, [[9, 6], [12, 15], [0, 0]])
+    def test_NegativeMatrix(self):
+        print("\nTesting Negative matrix...")
+        self.assertEqual((-self.A).Matrix, [[-3, -2], [-4, -5], [0, 0]])
 
 class TestBinomial(unittest.TestCase):
     

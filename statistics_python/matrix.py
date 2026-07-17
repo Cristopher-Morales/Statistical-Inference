@@ -25,7 +25,7 @@ class Matrix():
     
     def __getitem__(self, position):
         if isinstance(position,int):
-            assert 0<=position<self.n,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
+            assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
             return self.Matrix[position]
         elif isinstance(position,tuple):
             i,j=position
@@ -41,7 +41,7 @@ class Matrix():
         C=Matrix(self.m,self.n)
         for i in range(self.m):
             for j in range(self.n):
-                C[i,j]=self[i][j]+other[i,j]
+                C[i,j]=self[i,j]+other[i,j]
         return C
     
     def __neg__(self):
@@ -79,31 +79,3 @@ class Matrix():
             for j in range(self.n):
                 A_t[j,i]=self.Matrix[i][j]
         return A_t
-
-
-# A=Matrix(2,3)
-# A[0]=[3,2,6]
-# A[1]=[4,5,7]
-# print(A)
-# B=Matrix(2,3)
-# B[1]=[1,1,1]
-# print(B)
-# C=A+B
-# print(C)
-# A_t=A.transpose()
-# print(A_t)
-# D=Matrix(2,3, init_value=1)
-# A=Matrix(3,2,init_value=2)
-# print(D)
-# print(A)
-# E=D*A
-# print(E)
-# F=D*3
-# print(F)
-# F=3*D
-# print(F)
-# G=F-D
-# print(G)
-# H=-D
-# print(H)
-# print(3)
