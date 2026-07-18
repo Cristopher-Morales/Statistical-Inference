@@ -54,7 +54,7 @@ class Matrix():
                     A_=Matrix(m,n)
                     for i in range(0,m):
                         for j in range(0,n):
-                            A_[i,j]=A[i_start+i,j_start+j]
+                            A_[i,j]=self[i_start+i,j_start+j]
                     return A_
                 elif isinstance(i,slice):
                     assert isinstance(j, int) and 0<=j<self.n, f'{j} must be a valid positive integer and smaller than {self.m}.'
@@ -65,7 +65,7 @@ class Matrix():
                     m,n=i_stop-i_start, 1
                     A_=Matrix(m,n)
                     for i in range(0,m):
-                        A_[i,0]=A[i_start+i,j]
+                        A_[i,0]=self[i_start+i,j]
                     return A_
                 elif isinstance(j,slice):
                     assert isinstance(i, int) and 0<=i<self.m, f'{i} must be a valid positive integer and smaller than {self.m}.'
@@ -76,7 +76,7 @@ class Matrix():
                     m,n=1,j_stop-j_start
                     A_=Matrix(m,n)
                     for j in range(0,n):
-                        A_[0,j]=A[i,j_start+j]
+                        A_[0,j]=self[i,j_start+j]
                     return A_
         else:
             raise ValueError(f'{position} is an invalid argument for getting a row or element in a matrix')
