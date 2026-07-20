@@ -2,7 +2,10 @@ from mathematics import dotProduct
 
 class Matrix():
     
-    def __init__(self,rows:int,columns:int, init_value=0):
+    def __init__(self,rows:int,columns:int=None, init_value=0):
+        if columns is None:
+            print(f'Matrix is considered to be a square matrix of dimension {rows}x{rows}')
+            columns=rows
         assert (isinstance(rows, int) and isinstance(columns,int)),"rows and colums must be integers!"
         assert (rows>0 and columns>0),"rows and colums must be positive integers!"
         self.m=rows
@@ -129,7 +132,22 @@ class Matrix():
             return self.n
         else:
             return self.m
-    
+
+    def __pow__(self,other:int):
+        assert self.m==self.n, f'Matrix exponentiation is only defined for square matrices '
+        assert(isinstance(other,int)) and other>=0,f'exponent {other} must be a non-negative integer'
+        result=Matrix(self.m,self.m).identity()
+        k=other
+        y=self
+        while (k>0):
+            if k%2==0:
+                y=y*y
+                k//=2
+            else:
+                result=result*y
+                k-=1
+        return result
+
     def shape(self):
         return self.m, self.n
 
@@ -139,3 +157,9 @@ class Matrix():
             for j in range(self.n):
                 A_t[j,i]=self.Matrix[i][j]
         return A_t
+    
+    def identity(self):
+        I=Matrix(self.m,self.m)
+        for i in range(self.m):
+            I[i,i]=1.0
+        return I

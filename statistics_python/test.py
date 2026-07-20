@@ -94,6 +94,10 @@ class TestMatrix(unittest.TestCase):
     def test_NegativeMatrix(self):
         print("\nTesting Negative matrix...")
         self.assertEqual((-self.A).Matrix, [[-3, -2], [-4, -5], [0, 0]])
+    def test_PowerMatrix(self):
+        print("\nTesting Power matrix...")
+        self.A=Matrix(rows=4,columns=4,init_value=5.0)
+        self.assertEqual((self.A**3).Matrix,[[2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0]]) 
 
 class TestBinomial(unittest.TestCase):
     
