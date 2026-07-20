@@ -163,3 +163,41 @@ class Matrix():
         for i in range(self.m):
             I[i,i]=1.0
         return I
+    
+    def inverse(self,n_iterations=30, tol=10**-6):
+        assert self.m==self.n, f'Inverse of a matrix is only defined for square matrices'
+        I=self.identity()
+        A_1=self.norm_1()
+        A_inf=self.norm_infinity()
+        X_0=(1/(A_1*A_inf))*self.transpose()
+        X_1=self
+        k=0
+        error=1.0
+        while (k<n_iterations and error>tol):
+            X_1=X_0*(2*I-self*X_0)
+            error=(X_1-X_0).norm_1()/X_0.norm_1()
+            X_0=X_1
+            k+=1
+            if (k==n_iterations):
+                print("Maximum number of iterations has been reached.")    
+        return X_1
+    
+    def norm_1(self)->float:
+        result=0
+        for j in range(self.n):
+            sum=0
+            for i in range(self.m):
+                sum+=abs(self[i,j])
+            if sum>result:
+                result=sum
+        return result
+    
+    def norm_infinity(self)->float:
+        result=0
+        for i in range(self.m):
+            sum=0
+            for j in range(self.n):
+                sum+=abs(self[i,j])
+            if sum>result:
+                result=sum
+        return result

@@ -97,7 +97,26 @@ class TestMatrix(unittest.TestCase):
     def test_PowerMatrix(self):
         print("\nTesting Power matrix...")
         self.A=Matrix(rows=4,columns=4,init_value=5.0)
-        self.assertEqual((self.A**3).Matrix,[[2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0]]) 
+        self.assertEqual((self.A**3).Matrix,[[2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0]])
+
+    def test_NormsMatrix(self):
+        print("\nTesting Matrix norms ...")
+        self.B=Matrix(3,3)
+        self.B[0]=[3,6,-1]
+        self.B[1]=[3,1,0]
+        self.B[2]=[2,4,7]
+        self.assertEqual((self.B.norm_1(),self.B.norm_infinity()),(11,13))
+    
+    def test_InverseMatrix(self):
+        print("\nTesting Inverse of a Matrix...")
+        self.I=Matrix(4,4).identity()
+        self.A=Matrix(4,4)
+        self.A[0]=[0,7,-5,3]
+        self.A[1]=[2,8,0,4]
+        self.A[2]=[3,12,0,5]
+        self.A[3]=[1,3,1,3]
+        self.A_inv=self.A.inverse()
+        self.assertAlmostEqual((self.A*self.A_inv).norm_1(),self.I.norm_1(),delta = 10)
 
 class TestBinomial(unittest.TestCase):
     
