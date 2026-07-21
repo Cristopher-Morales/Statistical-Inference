@@ -81,23 +81,23 @@ class TestMatrix(unittest.TestCase):
         return super().tearDown()
     def test_MatrixAdd(self):
         print("\nTesting Matrix addition...")
-        self.assertEqual((self.A+self.B).Matrix, [[3, 2], [4, 5], [1, 1]])
+        self.assertEqual((self.A+self.B), [[3, 2], [4, 5], [1, 1]])
     def test_MatrixMult(self):
         print("\nTesting Matrix multiplication...")
-        self.assertEqual((self.D*self.A).Matrix, [[7, 7], [7, 7]])
+        self.assertEqual((self.D*self.A), [[7, 7], [7, 7]])
     def test_MatrixTranspose(self):
         print("\nTesting Matrix transpose...")
-        self.assertEqual((self.A.transpose()).Matrix, [[3, 4, 0], [2, 5, 0]])
+        self.assertEqual((self.A.transpose()), [[3, 4, 0], [2, 5, 0]])
     def test_ScalarMult(self):
         print("\nTesting Matrix Scalar multiplication...")
-        self.assertEqual((3*self.A).Matrix, [[9, 6], [12, 15], [0, 0]])
+        self.assertEqual((3*self.A), [[9, 6], [12, 15], [0, 0]])
     def test_NegativeMatrix(self):
         print("\nTesting Negative matrix...")
-        self.assertEqual((-self.A).Matrix, [[-3, -2], [-4, -5], [0, 0]])
+        self.assertEqual((-self.A), [[-3, -2], [-4, -5], [0, 0]])
     def test_PowerMatrix(self):
         print("\nTesting Power matrix...")
         self.A=Matrix(rows=4,columns=4,init_value=5.0)
-        self.assertEqual((self.A**3).Matrix,[[2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0]])
+        self.assertEqual((self.A**3),[[2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0], [2000.0, 2000.0, 2000.0, 2000.0]])
 
     def test_NormsMatrix(self):
         print("\nTesting Matrix norms ...")

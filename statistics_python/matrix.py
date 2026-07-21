@@ -10,19 +10,19 @@ class Matrix():
         assert (rows>0 and columns>0),"rows and colums must be positive integers!"
         self.m=rows
         self.n=columns
-        self.Matrix= [[init_value] * self.n for _ in range(self.m)]
+        self._Matrix= [[init_value] * self.n for _ in range(self.m)]
     
     def __setitem__(self, position, values):
         if isinstance(position,int) and 0<=position<self.m:
             assert isinstance(values,list), "a list of numbers must be provided to set a row"
             assert len(values)==self.n, "number of elements in list must be equal to the number of columns of the matrix"
-            self.Matrix[position]=values
+            self._Matrix[position]=values
         elif isinstance(position,tuple):
             i,j=position
             assert isinstance(i,int) and 0<=i<self.m, f'{i} must be a positive integer bigger or equal than 0 and smaller than number of rows {self.m}'
             assert isinstance(j,int) and 0<=j<self.n, f'{j} must be a positive integer bigger or equal than 0 and smaller than number of columns {self.n}'
             assert isinstance(values,float) or isinstance(values, int), f'{values} must be a valid number!!'
-            self.Matrix[i][j]=values
+            self._Matrix[i][j]=values
         else:
             raise ValueError(f'{position} is a invalid argument for setting a row or a matrix-element')
     
@@ -32,17 +32,17 @@ class Matrix():
             if self.m>1:
                 assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
                 A_=Matrix(1,self.n)
-                A_[0]=self.Matrix[position]
+                A_[0]=self._Matrix[position]
                 return A_
             else:
                 assert 0<=position<self.n, f'out of bounds for 1-row matrix with {self.n} columns ({position})'
-                return self.Matrix[0][position]
+                return self._Matrix[0][position]
         elif isinstance(position,tuple):
             i,j=position
             if not isinstance(j,slice) and not isinstance(i,slice):
                 assert isinstance(i,int) and 0<=i<self.m, f'{i} must be a positive integer bigger or equal than 0 and smaller than number of rows {self.m}'
                 assert isinstance(j,int) and 0<=j<self.n, f'{j} must be a positive integer bigger or equal than 0 and smaller than number of columns {self.n}'
-                return self.Matrix[i][j]
+                return self._Matrix[i][j]
             else:
                 if isinstance(j,slice) and isinstance(i,slice):
                     i_start = 0 if i.start is None else i.start
@@ -121,10 +121,10 @@ class Matrix():
         return self * other
     
     def __str__(self):
-        return f'{self.Matrix}'
+        return f'{self._Matrix}'
     
     def __repr__(self):
-        return self.Matrix
+        return self._Matrix
     
     def __len__(self):
         assert self.m==1 or self.n==1, f'len() method only available for single row-matrix or single row-column, uses .shape() method for getting matrix dimension'
@@ -147,6 +147,14 @@ class Matrix():
                 result=result*y
                 k-=1
         return result
+    
+    def __eq__(self, other):
+        if isinstance(other, Matrix):
+            return self._Matrix==other._Matrix
+        elif isinstance(other,list):
+            return self._Matrix==other
+        else:
+            return NotImplemented
 
     def shape(self):
         return self.m, self.n
@@ -155,7 +163,7 @@ class Matrix():
         A_t=Matrix(self.n,self.m)
         for i in range(self.m):
             for j in range(self.n):
-                A_t[j,i]=self.Matrix[i][j]
+                A_t[j,i]=self._Matrix[i][j]
         return A_t
     
     def identity(self):
@@ -183,21 +191,19 @@ class Matrix():
         return X_1
     
     def norm_1(self)->float:
-        result=0
-        for j in range(self.n):
-            sum=0
-            for i in range(self.m):
-                sum+=abs(self[i,j])
-            if sum>result:
-                result=sum
-        return result
+        n=self.n
+        m=self.m
+        max_column_sum=0
+        for j in range(n):
+            column_sum=0
+            for i in range(m):
+                column_sum+=abs(self._Matrix[i][j])
+            max_column_sum=max(max_column_sum,column_sum)
+        return max_column_sum
     
     def norm_infinity(self)->float:
-        result=0
-        for i in range(self.m):
-            sum=0
-            for j in range(self.n):
-                sum+=abs(self[i,j])
-            if sum>result:
-                result=sum
-        return result
+        max_row_sum =0
+        for row in self._Matrix:
+            row_sum=sum(abs(x) for x in row)
+            max_row_sum=max(max_row_sum,row_sum)
+        return max_row_sum
