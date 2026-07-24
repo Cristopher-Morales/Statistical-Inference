@@ -1,8 +1,9 @@
 from mathematics import dotProduct
+from typing import Optional, Any
 
 class Matrix():
     
-    def __init__(self,rows:int,columns:int=None, init_value=0):
+    def __init__(self, rows: int, columns: Optional[int] = None, init_value: Any = 0):
         if columns is None:
             print(f'Matrix is considered to be a square matrix of dimension {rows}x{rows}')
             columns=rows
@@ -28,7 +29,6 @@ class Matrix():
     
     def __getitem__(self, position):
         if isinstance(position,int):
-            # assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
             if self.m>1:
                 assert 0<=position<self.m,f'Out of index range for assessing row {position} in a matrix of {self.m}-rows'
                 A_=Matrix(1,self.n)
@@ -112,7 +112,7 @@ class Matrix():
             C=Matrix(self.m, self.n)
             for i in range(self.m):
                 for j in range(self.n):
-                    C[i,j] = other * self[i,j]
+                    C[i,j] = self._Matrix[i][j] * other
             return C
         else:
             raise ValueError(f'invalid multiply operation with {other}')
@@ -124,7 +124,7 @@ class Matrix():
         return f'{self._Matrix}'
     
     def __repr__(self):
-        return self._Matrix
+        return self.__str__()
     
     def __len__(self):
         assert self.m==1 or self.n==1, f'len() method only available for single row-matrix or single row-column, uses .shape() method for getting matrix dimension'

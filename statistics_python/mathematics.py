@@ -8,6 +8,8 @@ Module implementing mathematics functions and constants needed for probability, 
 
 """
 
+from typing import Optional, Any
+
 PI = 3.1415926535897932
 EULER = 2.7182818282861687
 
@@ -30,12 +32,12 @@ def factorial(k):
         # for k to be integer( not a float)
         n=int(k)
     # Memoization, use list of size n+1 ([f[0],f[1],....,f[n]])
-    F=[0]*(n+1)
+    F=[0.0]*(n+1)
     #  Handle base-Cases
     if k_NonInT:
         F[0]=sqrt(PI)
     else:
-        F[0]=1
+        F[0]=1.0
     # Filling up list to be look up
     for i in range(1,n+1):
         if k_NonInT:
@@ -115,7 +117,7 @@ def compute_integral_exp2(x, n_sum=90, tol=10**-12):
             break
     return int_value
 
-def dotProduct(x:list, y:list)->float:
+def dotProduct(x:Any, y:Any)->float:
     assert len(x)==len(y), f'list of number does not have the same length ({len(x)} != {len(y)})!! '
     assert all(type(x[i])==int or type(x[i])==float for i in range(len(x))), "list x must be a list of numbers"
     assert all(type(y[i])==int or type(y[i])==float for i in range(len(y))), "list y must be a list of numbers"
