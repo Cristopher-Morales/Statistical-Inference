@@ -106,7 +106,7 @@ class Matrix():
             D=other.transpose()
             for i in range(self.m):
                 for j in range(D.m):
-                    C[i,j]=dotProduct(self[i],D[j])
+                    C[i,j]=dotProduct(self[i],D._Matrix[j])
             return C
         elif isinstance(other,(float,int)):
             C=Matrix(self.m, self.n)
