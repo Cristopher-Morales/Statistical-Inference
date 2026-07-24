@@ -9,7 +9,7 @@ Module implementing iterative methods.
 
 from mathematics import dotProduct
 
-def GauusSeidel_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_initial:list=None)->list:
+def GauusSeidel_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_initial:list|None=None)->tuple[list, int, float]:
     n=len(A[0])
     assert len(A[0])==len(A), "works only for square matrices!! please check your matrix"
     assert len(b)==len(A[0]), "right-had size vector b must have the same number of rows as matrix A"
@@ -33,7 +33,7 @@ def GauusSeidel_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_in
         n_count+=1
     return x_1, n_count, error
 
-def Jacobi_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_initial:list=None)->list:
+def Jacobi_Method(A:list, b:list, tol:float=10**-6, n_max_iter:int=30, x_initial:list|None=None)->tuple[list, int, float]:
     n=len(A[0])
     assert len(A[0])==len(A), "works only for squared matrices!! please check your matrix"
     assert len(b)==len(A[0]), "right-had size vector b must have the same number of rows as matrix A"
