@@ -9,6 +9,7 @@ from continuous_distributions import *
 from mathematics import PI, sqrt, factorial, gamma, sine, cosine, dotProduct
 from iterative_methods import GauusSeidel_Method, Jacobi_Method
 from matrix import Matrix
+from polynomial_model import *
 
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
@@ -117,6 +118,26 @@ class TestMatrix(unittest.TestCase):
         self.A[3]=[1,3,1,3]
         self.A_inv=self.A.inverse()
         self.assertAlmostEqual((self.A*self.A_inv).norm_1(),self.I.norm_1(),delta = 10)
+
+class TestPolynomialFitting(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        return super().setUpClass()
+    def setUp(self):
+        self.model_1=PolynomialModel(2)
+        self.x=[1, 2, 3, 4, 5,6,7]
+        self.y=[50,55,65,80,110,150,200]
+        self.model_1.set_data(self.x,self.y)
+        self.model_1.fit_model()
+        return super().setUp()
+    @classmethod
+    def tearDownClass(cls):
+        return super().tearDownClass()
+    def tearDown(self):
+        return super().tearDown()
+    def test_MatrixAdd(self):
+        print("\nTesting Polynomial coefficients...")
+        self.assertEqual(self.model_1.coefficient, [[59.75998220219799], [-13.188981416343722], [4.717436025585329]])
 
 class TestBinomial(unittest.TestCase):
     
