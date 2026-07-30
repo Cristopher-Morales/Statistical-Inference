@@ -59,7 +59,6 @@ def multi_plot(plots,**kwargs):
     plt.figure(figsize=fig_size)
     plt.rcParams['font.size'] = str(font_size)
     for plot in tuple(plots):
-        tuple(plot[0])
         plt.plot(plot[0], plot[1], plot[2],markersize=marker_size, label=plot[3])
         plt.legend(loc=legend_location)
     fig = plt.gcf()
