@@ -1,5 +1,6 @@
 from plots import *
 from polynomial_model import *
+from stats import r2_coeff
 
 # Small example how to use polynomial fitting class
 
@@ -48,3 +49,6 @@ plot_config= {'xlabel': xlabel, 'ylabel': ylabel, 'marker_size': marker_size,\
 
 # plot results
 multi_plot(plots, **plot_config)
+
+# compute coefficient of determination R^2
+print(r2_coeff(y,y_outputs))

@@ -9,7 +9,7 @@ Module for implementing statistics quantities requiered for statistical inferenc
 
 from mathematics import sqrt
 
-def mean_value(values=None):
+def mean_value(values=None)->float:
     ''' 
     list::values: list containing the values from where the mean value will be computed
     '''
@@ -26,12 +26,28 @@ def mean_value(values=None):
     else:
         return values[0]
 
-def variance(values):
-    mean = mean_value(values)
-    variance = 0
-    for i in range(0,len(values)):
-        variance+=(values[i]-mean)**2
-    return variance/len(values)
+def variance(values:list)->float:
+    ''' Variance computed using online algorith (1-step) proposed by West (1979)'''
+    if (values==None or values==[]):
+        raise ValueError("argument must be a non-empty list of numbers or a single numerical value")
+    elif(type(values)==str):
+        raise TypeError("argument must be a list of numbers or a single number")
+    elif(type(values)==float or type(values)==int):
+        values=[values]
+    mean =values[0]
+    T = 0
+    for i in range(1,len(values)):
+        delta = (values[i]-mean)/(i+1)
+        mean+=delta
+        T+=(i+1)*i*delta**2
+    return T/len(values)
 
-def std_deviation(values):
+def std_deviation(values:list)->float:
     return sqrt(variance(values))
+
+def r2_coeff(y_true:list, y_pred:list)->float:
+    assert isinstance(y_pred,list) and isinstance(y_true,list), f'{y_pred} and {y_true} must be valid list.'
+    assert len(y_pred)==len(y_true), f'{y_pred} and {y_true} must have the same number of elements!!'
+    SS_res=sum((y_pred_i-y_i)**2 for (y_pred_i,y_i) in zip(y_pred,y_true))
+    SS_total=len(y_true)*variance(y_true)
+    return 1-SS_res/SS_total

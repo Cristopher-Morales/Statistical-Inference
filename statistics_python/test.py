@@ -2,7 +2,7 @@ import unittest
 import sys
 sys.dont_write_bytecode = True
 
-from stats import mean_value
+from stats import mean_value, r2_coeff
 from combinatory import *
 from discrete_distributions import *
 from continuous_distributions import *
@@ -14,10 +14,18 @@ from polynomial_model import *
 class TestStats(unittest.TestCase):
     def test_meanValue(self):
         print("")
-        print("\ntesting mean value function")
+        print("\nTesting mean value function")
         self.assertEqual(mean_value([1,2,3,4,5]),3)
         self.assertEqual(mean_value(1),1)
         self.assertRaises(ValueError, mean_value,)
+    def test_R2Coeff(self):
+        print("\nTesting R^2 coefficient...")
+        y_true = [3, -0.5, 2, 7]
+        y_pred = [2.5, 0.0, 2, 8]
+        self.assertEqual(r2_coeff(y_true,y_pred), 0.9486081370449679)
+        y_true = [1, 2, 3]
+        y_pred = [2, 2, 2]
+        self.assertEqual(r2_coeff(y_true,y_pred), 0.0)
 
 class TestProb(unittest.TestCase):
 
