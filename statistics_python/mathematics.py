@@ -8,7 +8,7 @@ Module implementing mathematics functions and constants needed for probability, 
 
 """
 
-from typing import Optional, Any
+from typing import Any
 
 PI = 3.1415926535897932
 EULER = 2.7182818282861687
