@@ -8,13 +8,16 @@ Module for implementing combinatory quantities needed for probabilities distribu
 """
 from mathematics import factorial
 
-def permutation(n,k):
-    if n>=k:
-        return factorial(n)/factorial(n-k)
-    else:
-        raise ValueError("n must be bigger or equal than k")
-def combination(n,k):
-    if n>=k:
-        return permutation(n,k)/factorial(k)
-    else:
-        raise ValueError("n must be bigger or equal than k")
+def permutation(n:int,k:int)->int:
+    assert isinstance(n, int) and isinstance(k, int), f'{n} and {k} must be integers bigger or equal than zero.'
+    assert n>=0 and k>=0, f'{n} and {k} must be integers bigger or equal than zero.'
+    assert (n>=k), f'{n} must be bigger or equal than {k} for computing a valid permutation.'
+
+    return int(factorial(n)/factorial(n-k))
+    
+def combination(n:int,k:int)->int:
+    assert isinstance(n, int) and isinstance(k, int), f'{n} and {k} must be integers bigger or equal than zero.'
+    assert n>=0 and k>=0, f'{n} and {k} must be integers bigger or equal than zero.'
+    assert (n>=k), f'{n} must be bigger or equal than {k} for computing a valid combination.'
+
+    return int(permutation(n,k)/factorial(k))
