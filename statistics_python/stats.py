@@ -27,7 +27,7 @@ def mean_value(values=None)->float:
         return values[0]
 
 def variance(values:list)->float:
-    ''' Variance computed using online algorith (1-step) proposed by West (1979)'''
+    ''' Variance computed using online algorithm (1-step) proposed by West (1979)'''
     if (values==None or values==[]):
         raise ValueError("argument must be a non-empty list of numbers or a single numerical value")
     elif(type(values)==str):
