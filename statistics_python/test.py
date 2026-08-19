@@ -254,13 +254,13 @@ class TestNormal(unittest.TestCase):
         return super().tearDown()
     def test_normalDistribution(self):
         print("\nTesting normal distribution unit test...")
-        self.assertEqual(self.normal.Distribution(0), 0.5)
+        self.assertEqual(self.normal.Distribution(2), 0.9772498680519012)
     def test_normalDensity(self):
-        print("\nTesting poisson mass probability unit test...")
+        print("\nTesting normal density unit test...")
         self.assertEqual(self.normal.Density(1), 0.24197072451894752)
     def test_normalProbability(self):
-        print("\nTesting poisson probability within an interval unit test...")
-        self.assertEqual(self.normal.Probability(-1.96,1.96), 0.950004209703631)
+        print("\nTesting Normal probability within an interval unit test...")
+        self.assertEqual(self.normal.Probability(-1.96,1.96), 0.9500042097027961)
 
 class TestExponential(unittest.TestCase):
     

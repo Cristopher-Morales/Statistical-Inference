@@ -7,7 +7,7 @@ Module implementing classes for continuous distributions commonly used in statis
 
 """
 
-from mathematics import PI, exp, sqrt, compute_integral_exp2, gamma, checkInteger
+from mathematics import PI, SQRT_2, exp, sqrt, erf, gamma, checkInteger
 
 class Uniform():
 
@@ -91,10 +91,11 @@ class Normal():
         return self.normalFactor * exp(-0.5*((x-self.mean)/self.standardDeviation)**2)
     
     def Distribution(self,x):
+        normalized_x=(x-self.mean)/(SQRT_2*self.standardDeviation)
         if x>=0:
-            return 0.5 + self.normalFactor*compute_integral_exp2((x-self.mean)/self.standardDeviation)
+            return 0.5*(1 + erf(normalized_x))
         else:
-            return 0.5 - self.normalFactor*compute_integral_exp2(-1.0*(x-self.mean)/self.standardDeviation)
+            return 0.5*(1 - erf(-1.0*normalized_x))
     
     def Probability(self,x,y):
         if x>y:

@@ -11,6 +11,8 @@ Module implementing mathematics functions and constants needed for probability, 
 from typing import Any
 
 PI = 3.1415926535897932
+SQRT_PI=1.7724538509055159
+SQRT_2=1.414213562373095
 EULER = 2.7182818282861687
 
 def checkInteger(x):
@@ -106,16 +108,16 @@ def sqrt(x,x_0=None, tol=10**-6, n_max=10):
             print("maximum number of iterations has been reached, with an error: ", error)
     return x_0
 
-def compute_integral_exp2(x, n_sum=90, tol=10**-12):
+def erf(x, n_sum=90, tol=10**-12):
     int_value=0
     for k in range(0,n_sum+1):
-        int_value_1 =int_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k)*2**k)
+        int_value_1 =int_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k))
         error = abs(int_value_1-int_value)
         if (tol<=error):
             int_value=int_value_1
         else:
             break
-    return int_value
+    return (2/SQRT_PI)*int_value
 
 def dotProduct(x:Any, y:Any)->float:
     assert len(x)==len(y), f'list of number does not have the same length ({len(x)} != {len(y)})!! '
