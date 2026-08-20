@@ -7,7 +7,7 @@ Module implementing classes for continuous distributions commonly used in statis
 
 """
 
-from mathematics import PI, SQRT_2, exp, sqrt, erf, gamma, checkInteger
+from mathematics import SQRT_PI, SQRT_2, exp, sqrt, erf, gamma, checkInteger, Newton_Raphson
 
 class Uniform():
 
@@ -85,7 +85,7 @@ class Normal():
         self.standardDeviation=sqrt(variance)
         self.expectedValue=mean
         self.variance=variance
-        self.normalFactor=1.0/sqrt(2*PI*variance)
+        self.normalFactor=1.0/(SQRT_2*SQRT_PI*self.standardDeviation)
 
     def Density(self, x):
         return self.normalFactor * exp(-0.5*((x-self.mean)/self.standardDeviation)**2)
@@ -104,6 +104,10 @@ class Normal():
             return 0
         else:
             return self.Distribution(y)-self.Distribution(x)
+
+    def inv(self,z:float)->float:
+        assert 0<z<1, f'{z} must be a valid probability between 0 and 1'
+        return Newton_Raphson(lambda x: self.Distribution(x)-z, lambda x: self.Density(x), x_0=self.mean)
 
 class Gamma():
 
@@ -129,4 +133,4 @@ class chiSquared(Gamma):
     def __init__(self, n):
         if (isinstance(n,int)==False or n<=0):
             raise ValueError(str(n)+" must be an integer bigger than zero")
-        super().__init__(n/2, 0.5) 
+        super().__init__(n/2, 0.5)

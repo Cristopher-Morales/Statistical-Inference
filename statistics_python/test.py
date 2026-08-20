@@ -257,7 +257,7 @@ class TestNormal(unittest.TestCase):
         self.assertEqual(self.normal.Distribution(2), 0.9772498680519012)
     def test_normalDensity(self):
         print("\nTesting normal density unit test...")
-        self.assertEqual(self.normal.Density(1), 0.24197072451894752)
+        self.assertEqual(self.normal.Density(1), 0.24197072451894763)
     def test_normalProbability(self):
         print("\nTesting Normal probability within an interval unit test...")
         self.assertEqual(self.normal.Probability(-1.96,1.96), 0.9500042097027961)

@@ -97,16 +97,7 @@ def sqrt(x,x_0=None, tol=10**-6, n_max=10):
         raise ValueError(str(x)+" must be a positive value")
     if (x_0 is None):
         x_0=x/2
-    error = 1
-    n_iteration=1
-    while (error>tol and n_iteration < n_max):
-        x_1=(x_0+x/x_0)/2
-        error = abs((x_1-x_0)/x_0)
-        x_0=x_1
-        n_iteration+=1
-        if (n_iteration==n_max):
-            print("maximum number of iterations has been reached, with an error: ", error)
-    return x_0
+    return Newton_Raphson(lambda y: y**2-x,lambda y: 2*y, x_0=x_0,tol=tol,n_max=n_max)
 
 def erf(x, n_sum=90, tol=10**-12):
     int_value=0
@@ -127,3 +118,16 @@ def dotProduct(x:Any, y:Any)->float:
     for i in range(len(x)):
         x_dot_y+=x[i]*y[i]
     return x_dot_y
+
+def Newton_Raphson(func,func_prime,x_0:float,tol=10**-6, n_max=10):
+    error = 1
+    n_iteration=1
+    while (error>tol and n_iteration < n_max):
+        x_1=x_0-func(x_0)/func_prime(x_0)
+        error = abs((x_1-x_0)/x_0)
+        x_0=x_1
+        n_iteration+=1
+        if (n_iteration==n_max):
+            print("maximum number of iterations has been reached, with an error: ", error)
+            break
+    return x_0
