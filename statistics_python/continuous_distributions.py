@@ -7,7 +7,7 @@ Module implementing classes for continuous distributions commonly used in statis
 
 """
 
-from mathematics import SQRT_PI, SQRT_2, exp, sqrt, erf, gamma, checkInteger, Newton_Raphson
+from mathematics import SQRT_PI, SQRT_2, exp, sqrt, erf, gamma, checkInteger, Newton_Raphson, ln
 
 class Uniform():
 
@@ -43,6 +43,10 @@ class Uniform():
         else:
             return self.Distribution(y)-self.Distribution(x)
 
+    def inv(self,z:float)->float:
+            assert 0<z<1, f'{z} must be a valid probability between 0 and 1'
+            return z*(self.b-self.a)+self.a
+
 class Exponential():
 
     def __init__(self,param_lambda):
@@ -71,6 +75,9 @@ class Exponential():
             return 0
         else:
             return self.Distribution(y)-self.Distribution(x)
+    def inv(self,z:float)->float:
+        assert 0<z<1, f'{z} must be a valid probability between 0 and 1'
+        return -1.0*self.param_lambda*ln(1.0-z)
 
 class Normal():
 

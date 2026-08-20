@@ -83,6 +83,17 @@ def exp(x, n_sum=90, tol=10**-12):
             break
     return exp_value
 
+def ln(x, n_sum=90, tol=10**-12):
+    ln_value=0
+    for k in range(0,n_sum+1):
+        ln_value_1 =ln_value+2*((x-1)/(x+1))**(2*k+1)/(2*k+1)
+        error = abs(ln_value_1-ln_value)
+        if (tol<=error):
+            ln_value=ln_value_1
+        else:
+            break
+    return ln_value
+
 def compute_pi(n_division=None):
     if n_division is None:
         n_division=100
@@ -92,14 +103,14 @@ def compute_pi(n_division=None):
         pi_value+=2*sqrt(1-(-1+i*2*h)**2)*2*h
     return pi_value
 
-def sqrt(x,x_0=None, tol=10**-6, n_max=10):
+def sqrt(x:float,x_0=None, tol=10**-6, n_max=10)->float:
     if (x<0):
         raise ValueError(str(x)+" must be a positive value")
     if (x_0 is None):
         x_0=x/2
     return Newton_Raphson(lambda y: y**2-x,lambda y: 2*y, x_0=x_0,tol=tol,n_max=n_max)
 
-def erf(x, n_sum=90, tol=10**-12):
+def erf(x:float, n_sum=90, tol=10**-12)->float:
     int_value=0
     for k in range(0,n_sum+1):
         int_value_1 =int_value+((-1.0)**k)*x**(2*k+1)/((2*k+1)*factorial(k))
@@ -119,7 +130,7 @@ def dotProduct(x:Any, y:Any)->float:
         x_dot_y+=x[i]*y[i]
     return x_dot_y
 
-def Newton_Raphson(func,func_prime,x_0:float,tol=10**-6, n_max=10):
+def Newton_Raphson(func,func_prime,x_0:float,tol=10**-6, n_max=10)->float:
     error = 1
     n_iteration=1
     while (error>tol and n_iteration < n_max):
