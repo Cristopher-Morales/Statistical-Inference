@@ -29,11 +29,10 @@ class Uniform():
 
     def __init__(self, a, b):
         if (isinstance(a, str) or isinstance(b, str)):
-            raise TypeError(str(a)+","+str(b) +
-                            " must be real number, and "+str(a)+"<"+str(b))
+            raise TypeError(f'{a},{b} must be real number, and {a} < {b}')
         if (b == a):
-            raise ValueError(str(a)+" and "+str(b)+" must be different for defining a "
-                             "well-defined uniform distribution")
+            raise ValueError(
+                f'{a} and {b} must be different for defining a well-defined uniform distribution')
         elif (b < a):
             # swap values
             a, b = b, a
@@ -111,48 +110,171 @@ class Uniform():
             return 1
 
     def Probability(self, x, y) -> float:
+        r"""Compute the Probability of the continuous Uniform distribution.
+
+        Parameters
+        ----------
+        x : float
+            Lower bound of the interval where the probability is computed.
+        y : float
+            Upper bound of the interval where the probability is computed.
+
+        Returns
+        --------
+        float
+            Probability of X belongs to intervals [x,y], i.e. P(x<=X<=y).
+
+        """
         if x > y:
-            raise ValueError(str(x)+" must be smaller than " + str(y))
+            raise ValueError(f'{x} must be smaller than {y}')
         elif x == y:
             return 0
         else:
             return self.Distribution(y)-self.Distribution(x)
 
     def inv(self, z: float) -> float:
+        r"""Compute the inverse of the continuous Uniform distribution.
+        
+        Parameters
+        ----------
+        z : float
+            Cumulative probability of the uniform distribution, i.e., P(X<=x)=z
+
+        Returns
+        --------
+        float
+            Inverse value which its cumulative probability is z..
+        
+        Note
+        ----
+        z argument must be a valid probability between 0 and 1
+        """
         assert 0 < z < 1, f'{z} must be a valid probability between 0 and 1'
         return z*(self.b-self.a)+self.a
 
 
 class Exponential():
+    r"""Class for defining the Probability Density Function (PDF) of the Exponential distribution.
 
+    The exponential probability distribution is computed as:
+
+    f(x)=\lambda * exp(-lambda*x) if x>0, otherwise is 0.
+
+    Parameters
+    ----------
+    param_lambda : float
+        rate lambda parameter of the exponential distribution. It must be a positive real number.
+    
+    Note
+    ----
+    It uses the rate parameter definition. In case that lambda represents the scale parameter,
+    initialize the distribution using 1/lambda.
+    """
     def __init__(self, param_lambda):
         if (isinstance(param_lambda, str)):
-            raise TypeError(str(param_lambda)+" must be real number")
-        self.param_lambda = param_lambda
-        self.expectedValue = param_lambda
-        self.variance = param_lambda**2
+            raise TypeError(f'{param_lambda} must be a positive real number')
+        elif (param_lambda<=0):
+            raise ValueError(f'{param_lambda} must be a positive real number')
+        else:
+            self.param_lambda = param_lambda
+            self.expectedValue = param_lambda
+            self.variance = param_lambda**2
 
     def Density(self, x):
+        r"""Compute Probability Density Function (PDF) of the Exponential distribution.
+        
+        f(x) = (1/\lambda) * exp(-x/\lambda),  if x>=0
+        
+                0,            otherwise
+        
+        Parameters
+        ----------
+        x : float
+            Point where the probability density function is evaluated.
+        
+        Returns
+        ------
+        float
+            Probability density evaluated at x.
+
+        Note
+        ----
+
+        The exponential distribution is defined by one parameter:
+        rate parameter \lambda.
+
+        The probability density has exponential shape when x>=0
+        and zero when x<0.
+        """
         if (x < 0):
             return 0
         else:
             return 1.0/self.param_lambda * exp(-x/self.param_lambda)
 
     def Distribution(self, x):
+        r"""Compute the Cumulative Distribution Function(CDF) of the Exponential distribution.
+
+        $$F(x) =
+        \\begin{cases}
+            1-\\exp(-x/\\lambda), & x\\geq 0, \\\\
+            0, & x <0 .
+        \\end{cases}$$
+        
+        Parameters
+        ----------
+        x : float
+            Point where the Cumulative Distribution Function is evaluated.
+
+        Returns
+        --------
+        float
+            Cumulative probability up to x, i.e. P(X<=x).
+        """
         if x < 0:
             return 0
         else:
             return 1.0 - exp(-x/self.param_lambda)
 
     def Probability(self, x, y):
+        r"""Compute the Probability of the continuous Uniform distribution.
+
+        Parameters
+        ----------
+        x : float
+            Lower bound of the interval where the probability is computed.
+        y : float
+            Upper bound of the interval where the probability is computed.
+
+        Returns
+        --------
+        float
+            Probability of X belongs to intervals [x,y], i.e. P(x<=X<=y).
+
+        """
         if x > y:
-            raise ValueError(str(x)+" must be smaller than " + str(y))
+            raise ValueError(f'{x} must be smaller than  {y}')
         elif x == y:
             return 0
         else:
             return self.Distribution(y)-self.Distribution(x)
 
     def inv(self, z: float) -> float:
+        r"""Compute the inverse of the Exponential distribution.
+        
+        Parameters
+        ----------
+        z : float
+            Cumulative probability of the Exponential distribution, i.e., P(X<=x)=z
+
+        Returns
+        --------
+        float
+            Inverse value which its Cumulative probability is z.
+        
+        Note
+        ----
+        z argument must be a valid probability between 0 and 1
+        """
         assert 0 < z < 1, f'{z} must be a valid probability between 0 and 1'
         return -1.0*self.param_lambda*ln(1.0-z)
 
@@ -161,13 +283,12 @@ class Normal():
 
     def __init__(self, mean=None, variance=None):
         if (variance != None and variance < 0):
-            raise ValueError("Variance "+str(variance) +
-                             " must be a positive value.")
+            raise ValueError(f'Variance {variance} must be a positive value.')
         if (mean is None or variance is None):
             mean = 0.0
             variance = 1.0
             print(
-                f'Normal standard distribution is assumed (mean = {mean} and variance = {variance})')
+                f'Standard Normal distribution is assumed (mean = {mean} and variance = {variance})')
         self.mean = mean
         self.standardDeviation = sqrt(variance)
         self.expectedValue = mean
@@ -186,7 +307,7 @@ class Normal():
 
     def Probability(self, x, y):
         if x > y:
-            raise ValueError(str(x)+" must be smaller than " + str(y))
+            raise ValueError(f'{x} must be smaller than {y}')
         elif x == y:
             return 0
         else:
@@ -220,14 +341,14 @@ class Gamma():
     def __init__(self, alpha: float, beta: float | None = None):
         if (alpha is None or checkInteger(alpha)):
             raise ValueError(
-                "alpha parameter must be an positive integer or half-integer")
+                f'{alpha} parameter must be an positive integer or half-integer')
         else:
             self.alpha = alpha
         if (beta is None):
-            print("\n beta value is initialized to 1.0")
+            print("\n beta parameter is initialized to 1.0")
             self.beta = 1.0
         elif (beta < 0):
-            raise ValueError("scale parameter beta must be bigger than zero")
+            raise ValueError(f'scale parameter {beta} must be bigger than zero')
         else:
             self.beta = beta
         self.expectedValue = self.alpha*self.beta
@@ -260,5 +381,5 @@ class chiSquared(Gamma):
 
     def __init__(self, n):
         if (isinstance(n, int) == False or n <= 0):
-            raise ValueError(str(n)+" must be an integer bigger than zero")
+            raise ValueError(f'{n} must be an integer bigger than zero')
         super().__init__(n/2, 2.0)
