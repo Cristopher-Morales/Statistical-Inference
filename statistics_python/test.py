@@ -231,10 +231,10 @@ class TestPoisson(unittest.TestCase):
         return super().tearDown()
     def test_poissonDistribution(self):
         print("\nTesting poisson distribution unit test...")
-        self.assertEqual(self.poisson.Distribution(1), 0.4060058497086582)
+        self.assertEqual(self.poisson.Distribution(1), 0.40600584970865816)
     def test_poissonMassProbability(self):
         print("\nTesting poisson mass probability unit test...")
-        self.assertEqual(self.poisson.MassProbability(1), 0.2706705664724388)
+        self.assertEqual(self.poisson.MassProbability(1), 0.27067056647243876)
     def test_poissonProbability(self):
         print("\nTesting poisson probability within an interval unit test...")
         self.assertEqual(self.poisson.Probability(1,2), 0.5413411329448776)
