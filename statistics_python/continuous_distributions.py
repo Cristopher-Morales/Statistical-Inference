@@ -44,9 +44,7 @@ class Uniform():
     def Density(self, x) -> float:
         r"""Method for computing Probability Density Function (PDF) of the Uniform distribution.
         
-        f(x) = 1 / (b - a),  if a <= x <= b
-        
-                0,            otherwise
+        $$f(x) = \left\lbrace\begin{array}{cc}1 / (b - a)&\;  \mathrm{if}\; a <= x <= b,\\ 0,&\ \mathrm{otherwise}\end{array}\right.$$
         
         Parameters
         ----------
@@ -76,12 +74,9 @@ class Uniform():
     def Distribution(self, x) -> float:
         r"""Compute the Cumulative Distribution Function(CDF) of the continuous Uniform distribution.
 
-        $$F(x) =
-        \\begin{cases}
-            0, & x < a, \\\\
-            \\dfrac{x-a}{b-a}, & a \\leq x \\leq b, \\\\
-            1, & x > b.
-        \\end{cases}$$
+        $$F(x) =\left\lbrace\begin{array}{cc}0,& & x < a, \\ \dfrac{x-a}{b-a}, & a \leq x \leq b, \\1, & x > b.\end{array}\right.$$
+        
+        
         
         Parameters
         ----------
@@ -101,7 +96,7 @@ class Uniform():
         -1 if x is bigger than upper bound of the uniform distribution.
         - (x-a)/(b-a) is x belong to the interval [a,b].
         """
-        
+
         if x < self.a:
             return 0
         elif self.a <= x or x < self.b:
@@ -158,8 +153,9 @@ class Exponential():
 
     The exponential probability distribution is computed as:
 
-    f(x)=\lambda * exp(-lambda*x) if x>0, otherwise is 0.
+    $$f(x) = \left\lbrace\begin{array}{cc}(1/\lambda) * \exp(-x/\lambda),& if\;x\geq 0\\ 0,  &  \mathrm{otherwise}\end{array}\right.$$
 
+    
     Parameters
     ----------
     param_lambda : float
@@ -170,10 +166,11 @@ class Exponential():
     It uses the rate parameter definition. In case that lambda represents the scale parameter,
     initialize the distribution using 1/lambda.
     """
+
     def __init__(self, param_lambda):
         if (isinstance(param_lambda, str)):
             raise TypeError(f'{param_lambda} must be a positive real number')
-        elif (param_lambda<=0):
+        elif (param_lambda <= 0):
             raise ValueError(f'{param_lambda} must be a positive real number')
         else:
             self.param_lambda = param_lambda
@@ -183,9 +180,7 @@ class Exponential():
     def Density(self, x):
         r"""Compute Probability Density Function (PDF) of the Exponential distribution.
         
-        f(x) = (1/\lambda) * exp(-x/\lambda),  if x>=0
-        
-                0,            otherwise
+        $$f(x) = \left\lbrace\begin{array}{cc}(1/\lambda) * \exp(-x/\lambda),& if\;x\geq 0\\ 0,  &  \mathrm{otherwise}\end{array}\right.$$
         
         Parameters
         ----------
@@ -214,11 +209,7 @@ class Exponential():
     def Distribution(self, x):
         r"""Compute the Cumulative Distribution Function(CDF) of the Exponential distribution.
 
-        $$F(x) =
-        \\begin{cases}
-            1-\\exp(-x/\\lambda), & x\\geq 0, \\\\
-            0, & x <0 .
-        \\end{cases}$$
+        $$F(x) =\left\lbrace\begin{array}{cc}1-\exp(-x/\lambda), & x\geq 0, \\0, & x <0 \end{array}\right.$$
         
         Parameters
         ----------
@@ -228,7 +219,7 @@ class Exponential():
         Returns
         --------
         float
-            Cumulative probability up to x, i.e. P(X<=x).
+            Cumulative probability up to x, i.e. $P(X\leq x)$.
         """
         if x < 0:
             return 0
@@ -248,7 +239,7 @@ class Exponential():
         Returns
         --------
         float
-            Probability of X belongs to intervals [x,y], i.e. P(x<=X<=y).
+            Probability of X belongs to intervals [x,y], i.e. $P(x \leq X \leq y)$.
 
         """
         if x > y:
@@ -260,11 +251,13 @@ class Exponential():
 
     def inv(self, z: float) -> float:
         r"""Compute the inverse of the Exponential distribution.
+
+        $$x=F^{-1}(z)$$
         
         Parameters
         ----------
         z : float
-            Cumulative probability of the Exponential distribution, i.e., P(X<=x)=z
+            Cumulative probability of the Exponential distribution, i.e., $P(X\leq x)=z$
 
         Returns
         --------
@@ -280,25 +273,77 @@ class Exponential():
 
 
 class Normal():
+    r"""Class for defining the Probability Density Function (PDF) of the Normal distribution.
+
+    Parameters
+    ----------
+    mean : float
+        The localization(mean) parameter (denoted as $\mu$).
+    varianza : float
+        The scale(varianza) parameter (denoted as $\sigma^2$). Must be > 0.
+    
+    Note
+    ----
+    When mean or varianza are not given as argument, a Standard Normal distribution is assumed
+    where mean=0 and varianza=1.
+    """
 
     def __init__(self, mean=None, variance=None):
         if (variance != None and variance < 0):
             raise ValueError(f'Variance {variance} must be a positive value.')
         if (mean is None or variance is None):
+            # When mean or variance are not given, the Standard Normal distribution is assumed
             mean = 0.0
             variance = 1.0
             print(
                 f'Standard Normal distribution is assumed (mean = {mean} and variance = {variance})')
+        # mu=mean
         self.mean = mean
+        # sigma=(variance)^0.5
         self.standardDeviation = sqrt(variance)
+        # Set expected and variance values
         self.expectedValue = mean
         self.variance = variance
+        # normal factor defined for having a valid PDF
         self.normalFactor = 1.0/(SQRT_2*SQRT_PI*self.standardDeviation)
 
     def Density(self, x):
+        r"""Compute Probability Density Function (PDF) of the Normal distribution.
+
+        ----------
+        x : float
+            Point where the probability density function is evaluated.
+        
+        Returns
+        ------
+        float
+            Probability density evaluated at x.
+        """
         return self.normalFactor * exp(-0.5*((x-self.mean)/self.standardDeviation)**2)
 
     def Distribution(self, x):
+        r"""Compute the Cumulative Distribution Function(CDF) of the Exponential distribution.
+
+        $$F(x)=P(X\leq x)$$
+        
+        Parameters
+        ----------
+        x : float
+            Point where the Cumulative Distribution Function is evaluated.
+
+        Returns
+        --------
+        float
+            Cumulative probability up to x, i.e. $$P(X\leq x)$$.
+        
+        Note
+        ----
+        The probability value is computed using the erf function defined in mathematics.py
+        For more information, please read that file.
+        """
+
+        # normalization is applied $$Z=(x-\mu)/\sigma$$
+
         normalized_x = (x-self.mean)/(SQRT_2*self.standardDeviation)
         if x >= 0:
             return 0.5*(1 + erf(normalized_x))
@@ -306,6 +351,21 @@ class Normal():
             return 0.5*(1 - erf(-1.0*normalized_x))
 
     def Probability(self, x, y):
+        r"""Compute the Probability of the Normal distribution.
+
+        Parameters
+        ----------
+        x : float
+            Lower bound of the interval where the probability is computed.
+        y : float
+            Upper bound of the interval where the probability is computed.
+
+        Returns
+        --------
+        float
+            Probability of X belongs to intervals [x,y], i.e. $P(x \leq X \leq y)$.
+
+        """
         if x > y:
             raise ValueError(f'{x} must be smaller than {y}')
         elif x == y:
@@ -314,6 +374,27 @@ class Normal():
             return self.Distribution(y)-self.Distribution(x)
 
     def inv(self, z: float) -> float:
+        r"""Compute the inverse of the Normal distribution.
+
+        $$x=F^{-1}(z)$$
+        
+        Parameters
+        ----------
+        z : float
+            Cumulative probability of the Normal distribution, i.e., $P(X\leq x)=z$
+
+        Returns
+        --------
+        float
+            Inverse value which its Cumulative probability is z.
+        
+        Note
+        ----
+        z argument must be a valid probability between 0 and 1.
+        Newton-Raphson method is used as an iterative method for computing the fixed point
+        of the equation $g(x)=F(x)-z=0$. $F(x)$ and $f(x)$ are needed for computing the inverse value.
+        for more information, go to mathematics.py module.
+        """
         assert 0 < z < 1, f'{z} must be a valid probability between 0 and 1'
         return Newton_Raphson(lambda x: self.Distribution(x)-z, lambda x: self.Density(x), x_0=self.mean)
 
@@ -348,7 +429,8 @@ class Gamma():
             print("\n beta parameter is initialized to 1.0")
             self.beta = 1.0
         elif (beta < 0):
-            raise ValueError(f'scale parameter {beta} must be bigger than zero')
+            raise ValueError(
+                f'scale parameter {beta} must be bigger than zero')
         else:
             self.beta = beta
         self.expectedValue = self.alpha*self.beta
