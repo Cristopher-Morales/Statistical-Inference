@@ -52,35 +52,99 @@ def factorial(k):
 def gamma(k):
     return factorial(k-1)
 
-def cosine(x, n_sum=90, tol=10**-12):
-    cosine_value=0
-    for k in range(0,n_sum):
-        cosine_value_1=cosine_value+(-1)**k*x**(2*k)/factorial(2*k)
-        if abs(cosine_value_1-cosine_value)>tol:
-            cosine_value=cosine_value_1
-        else:
+def cosine(x:float, n_sum:int=90, tol:float=10**-12)->float:
+    """
+    Compute the cosine of x using the Maclaurin series.
+
+    Parameters
+    ----------
+    x : float
+        Angle in radians.
+    n_sum : int
+        Maximum number of terms in the series.
+    tol : float
+        Absolute tolerance for convergence.
+
+    Returns
+    -------
+    float
+        Approximation of cos(x).
+    """
+    cosine_value = 1.0
+    term_cosine = 1.0
+
+    for k in range(1, n_sum):
+        term_cosine *= -(x**2) / ((2*k - 1)*(2*k))
+        cosine_value += term_cosine
+
+        if abs(term_cosine) < tol:
             break
+
     return cosine_value
 
-def sine(x, n_sum=90, tol=10**-12):
-    sine_value=0
-    for k in range(0,n_sum):
-        sine_value_1=sine_value+(-1)**k*x**(2*k+1)/factorial(2*k+1)
-        if abs(sine_value_1-sine_value)>tol:
-            sine_value=sine_value_1
-        else:
+
+def sine(x:float, n_sum:int=90, tol:float=10**-12)->float:
+    """
+    Compute the sine of x using the Maclaurin series.
+
+    Parameters
+    ----------
+    x : float
+        Angle in radians.
+    n_sum : int
+        Maximum number of terms in the series.
+    tol : float
+        Absolute tolerance for convergence.
+
+    Returns
+    -------
+    float
+        Approximation of sin(x).
+    """
+    sine_value = x
+    term_sine = x
+
+    for k in range(1, n_sum):
+        term_sine *= -(x**2)/((2*k+1)*(2*k))
+        sine_value += term_sine
+
+        if abs(term_sine) < tol:
             break
+
     return sine_value
 
-def exp(x, n_sum=90, tol=10**-12):
-    exp_value=0
-    for k in range(0,n_sum+1):
-        exp_value_1 =exp_value+x**k/factorial(k)
-        error = abs(exp_value_1-exp_value)
-        if (tol<=error):
-            exp_value=exp_value_1
-        else:
-            break
+def exp(x:float, n_sum:int=90, tol:float=10**-12)->float:
+    """
+        Compute the exponential of x using the Maclaurin series.
+    
+        Parameters
+        ----------
+        x : float
+            Point where exponential is evaluated.
+        n_sum : int
+            Maximum number of terms in the series.
+        tol : float
+            Absolute tolerance for convergence.
+    
+        Returns
+        -------
+        float
+            Approximation of exp(x).
+        """
+    exp_value=1.0
+    term_exp=1.0
+    for k in range(1,n_sum):
+        term_exp*=x/k
+        exp_value+=term_exp
+        next_term = term_exp * x / (k + 1)
+        ratio = abs(x) / (k + 2)
+
+        if ratio < 1:
+            error_bound = abs(next_term) / (1 - ratio)
+
+            if error_bound < tol:
+                break
+
     return exp_value
 
 def ln(x, n_sum=90, tol=10**-12):
@@ -93,15 +157,6 @@ def ln(x, n_sum=90, tol=10**-12):
         else:
             break
     return ln_value
-
-def compute_pi(n_division=None):
-    if n_division is None:
-        n_division=100
-    h=1/n_division
-    pi_value=0
-    for i in range(0,n_division+1):
-        pi_value+=2*sqrt(1-(-1+i*2*h)**2)*2*h
-    return pi_value
 
 def sqrt(x:float,x_0=None, tol=10**-6, n_max=10)->float:
     if (x<0):
