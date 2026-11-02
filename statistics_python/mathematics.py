@@ -15,6 +15,29 @@ SQRT_PI=1.7724538509055159
 SQRT_2=1.414213562373095
 EULER = 2.7182818282861687
 
+def procedure_to_base(x:float, b:int)->list:
+    """
+    Compute the representation of number n in the base b.
+
+    Parameters
+    ----------
+    n : float
+        number to be represented in base b.
+    b : int
+        base number.
+
+    Returns
+    -------
+    list
+        list of integers [a_1,a_2,..._a_k ] to represent n in base-b.
+    """    
+    a=[]
+    while x != 0:
+        a.append(x%b)
+        x = x//b
+    a.reverse()
+    return a
+
 def checkInteger(x):
     if (2*x-int(2*x))!= 0.0:
         raise ValueError(str(x)+" must be a non-negative integer or a half-integer n/2!!")
@@ -115,22 +138,22 @@ def sine(x:float, n_sum:int=90, tol:float=10**-12)->float:
 
 def exp(x:float, n_sum:int=90, tol:float=10**-12)->float:
     """
-        Compute the exponential of x using the Maclaurin series.
-    
-        Parameters
-        ----------
-        x : float
-            Point where exponential is evaluated.
-        n_sum : int
-            Maximum number of terms in the series.
-        tol : float
-            Absolute tolerance for convergence.
-    
-        Returns
-        -------
-        float
-            Approximation of exp(x).
-        """
+    Compute the exponential of x using the Maclaurin series.
+
+    Parameters
+    ----------
+    x : float
+        Point where exponential is evaluated.
+    n_sum : int
+        Maximum number of terms in the series.
+    tol : float
+        Absolute tolerance for convergence.
+
+    Returns
+    -------
+    float
+        Approximation of exp(x).
+    """
     exp_value=1.0
     term_exp=1.0
     for k in range(1,n_sum):
@@ -147,16 +170,44 @@ def exp(x:float, n_sum:int=90, tol:float=10**-12)->float:
 
     return exp_value
 
-def ln(x, n_sum=90, tol=10**-12):
-    ln_value=0
-    for k in range(0,n_sum+1):
-        ln_value_1 =ln_value+2*((x-1)/(x+1))**(2*k+1)/(2*k+1)
-        error = abs(ln_value_1-ln_value)
-        if (tol<=error):
-            ln_value=ln_value_1
-        else:
-            break
-    return ln_value
+
+def ln(x: float) -> float:
+    """
+    Compute the logarithm of x using Newton-Raphson.
+
+    Parameters
+    ----------
+    x : float
+        Point where logarithm is evaluated.
+
+    Returns
+    -------
+    float
+        Approximation of ln(x).
+
+    Note
+    ----
+    The method decompuses the number x as
+    $$x=a* 10^{n}$$
+    with *a* a value in the range [1,10), then it uses the logarithm property:
+    $$\ln(x)=\ln(a)+n\ln(10)$$ # type: ignore
+    and compute $\ln(a)$ using Newton-Raphson in the fixed-point formula $\exp(y/2)-x\exp(-y/2)=0$ 
+    
+    """
+
+    # first represent x in base-10 representation and get the largest n such as x=a*10^n
+    # with a in interval [1,10)]
+    n = len(procedure_to_base(x, 10))-1
+    # Divide x by 10^{n} to get a number in the range[1,10)
+    a = x/(10**n)
+    # Used ln(10) value for computing ln(x)
+    ln_10 = 2.302585092994046
+    # Get ln_a approximation using Newton-Raphson
+    ln_a = Newton_Raphson(lambda y: -2*(a-exp(y)),
+                          lambda y: a+exp(y), x_0=a/2, tol=10**-12, n_max=10)
+    # return approximation of ln(x)
+    return ln_a + (n*ln_10)
+
 
 def sqrt(x:float,x_0=None, tol=10**-6, n_max=10)->float:
     if (x<0):
