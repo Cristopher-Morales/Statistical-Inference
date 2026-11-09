@@ -47,6 +47,11 @@ class TestMath(unittest.TestCase):
         self.assertEqual(gamma(1/2), sqrt(PI))
         self.assertEqual(gamma(3/2),0.5*sqrt(PI))
         self.assertEqual(gamma(5/2),(3/4)*sqrt(PI))
+        self.assertEqual(gamma(0.1),9.513507698668716 )
+        self.assertEqual(gamma(0.3),2.9915689876875873 )
+        self.assertEqual(gamma(0.7),1.298055332647561)
+        self.assertEqual(gamma(0.9),1.0686287021193213)
+        self.assertEqual(gamma(7.2),1050.3178166626858 )
     def test_sine(self):
         print("\nTesting sine function...")
         self.assertAlmostEqual(sine(PI/2,tol=10**-20, n_sum=1000),1.0,delta=3*10**-16)
@@ -231,13 +236,13 @@ class TestPoisson(unittest.TestCase):
         return super().tearDown()
     def test_poissonDistribution(self):
         print("\nTesting poisson distribution unit test...")
-        self.assertEqual(self.poisson.Distribution(1), 0.40600584970865816)
+        self.assertEqual(self.poisson.Distribution(1), 0.40600584970986425)
     def test_poissonMassProbability(self):
         print("\nTesting poisson mass probability unit test...")
-        self.assertEqual(self.poisson.MassProbability(1), 0.27067056647243876)
+        self.assertEqual(self.poisson.MassProbability(1), 0.27067056647324284)
     def test_poissonProbability(self):
         print("\nTesting poisson probability within an interval unit test...")
-        self.assertEqual(self.poisson.Probability(1,2), 0.5413411329448776)
+        self.assertEqual(self.poisson.Probability(1,2), 0.5413411329464857)
 
 class TestNormal(unittest.TestCase):
     
@@ -257,7 +262,7 @@ class TestNormal(unittest.TestCase):
         self.assertEqual(self.normal.Distribution(2), 0.9772498680519012)
     def test_normalDensity(self):
         print("\nTesting normal density unit test...")
-        self.assertEqual(self.normal.Density(1), 0.24197072451894763)
+        self.assertEqual(self.normal.Density(1), 0.24197072451922122)
     def test_normalProbability(self):
         print("\nTesting Normal probability within an interval unit test...")
         self.assertEqual(self.normal.Probability(-1.96,1.96), 0.9500042097027961)
@@ -277,13 +282,13 @@ class TestExponential(unittest.TestCase):
         return super().tearDown()
     def test_exponentialDistribution(self):
         print("\nTesting exponential distribution unit test...")
-        self.assertEqual(self.exponential.Distribution(2.0), 0.632120558827838)
+        self.assertEqual(self.exponential.Distribution(2.0), 0.6321205588284473)
     def test_exponentialDensity(self):
         print("\nTesting exponential density unit test...")
         self.assertEqual(self.exponential.Density(0), 0.5)
     def test_exponentialProbability(self):
         print("\nTesting exponential probability within an interval unit test...")
-        self.assertEqual(self.exponential.Probability(0.0,2.0), 0.632120558827838)
+        self.assertEqual(self.exponential.Probability(0.0,2.0), 0.6321205588284473)
 
 class TestUniform(unittest.TestCase):
     
