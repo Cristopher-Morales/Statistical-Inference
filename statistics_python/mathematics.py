@@ -40,11 +40,10 @@ def procedure_to_base(x:float, b:int)->list:
 
 def checkInteger(x):
     if (2*x-int(2*x))!= 0.0:
-        raise ValueError(str(x)+" must be a non-negative integer or a half-integer n/2!!")
+        return False
+    return True
 
 def factorial(k):
-    # check that k must be a non-negative integer or a half-integer
-    checkInteger(k)
     n=k
     # define a flag for dealing with case when k=(2n-1)/2 is half of an integer value
     k_NonInT=False
@@ -72,8 +71,57 @@ def factorial(k):
     
     return F[n]
     
-def gamma(k):
-    return factorial(k-1)
+def gamma(k:int|float)->int|float:
+    """
+    Compute gamma function given a real positive value.
+
+    Parameters
+    ----------
+    k : int|float
+        Real positive value where gamma function is computed.
+
+    Returns
+    -------
+    int|float
+        Approximation of gamma function of k.
+    
+    Notes
+    -----
+    The gamma function is computed using the Lanczos approximation for G=7 and n=9.
+    Code has been adapted from the reference given below.
+    https://en.wikipedia.org/wiki/Lanczos_approximation
+
+    When k is an integer or half-integer (2n-1)/2, the identity Gamma(k)=(k-1)! is used.
+    """
+    assert k>0, f'Gamma function is not implemented for negative values.'
+
+    # if k is and integer or half-integer, factorial function is used.
+    if (checkInteger(k)):
+        return factorial(k-1)
+
+    # Implement Lanczos approximation.
+    # Constant g and Coefficients p_k(g)
+    G = 7
+    P = [
+        0.99999999999980993,
+        676.5203681218851,
+        -1259.1392167224028,
+        771.32342877765313,
+        -176.61502916214059,
+        12.507343278686905,
+        -0.13857109526572012,
+        9.9843695780195716e-6,
+        1.5056327351493116e-7
+    ]
+
+    if k < 0.5:
+        # Lanczos is not valid for k smaller than 0.5. Reflection formula is used.
+        return PI / (sine(PI * k) * gamma(1-k))
+    k -= 1
+    x = P[0] + sum(P[i] / (k + i) for i in range(1, len(P)))
+    t = k + G + 0.5
+
+    return sqrt(2 * PI) * t ** (k + 0.5) * exp(-t) * x
 
 def cosine(x:float, n_sum:int=90, tol:float=10**-12)->float:
     """
@@ -93,9 +141,27 @@ def cosine(x:float, n_sum:int=90, tol:float=10**-12)->float:
     float
         Approximation of cos(x).
     """
+
+    # Perform argument reduction to interval [-PI, PI]
+    x = x % (2 * PI)
+    if x > PI:
+        x -= 2 * PI
+
+    # Use symmetry and reduce to interval [-PI/2, PI/2] for improving accuracy
+    # Cosine is negative within the intervals [-PI,-PI/2] y [PI/2,PI], then sign-value is used.
+    sign = 1.0
+    if x > PI / 2:
+        x = PI - x
+        sign = -1.0
+    elif x < -PI / 2:
+        x = -PI - x
+        sign = -1.0
+
+    # First term of the MaClaurin series of cos(x)
     cosine_value = 1.0
     term_cosine = 1.0
 
+    # Add additional terms to the serie
     for k in range(1, n_sum):
         term_cosine *= -(x**2) / ((2*k - 1)*(2*k))
         cosine_value += term_cosine
@@ -103,7 +169,7 @@ def cosine(x:float, n_sum:int=90, tol:float=10**-12)->float:
         if abs(term_cosine) < tol:
             break
 
-    return cosine_value
+    return sign * cosine_value
 
 
 def sine(x:float, n_sum:int=90, tol:float=10**-12)->float:
@@ -124,9 +190,23 @@ def sine(x:float, n_sum:int=90, tol:float=10**-12)->float:
     float
         Approximation of sin(x).
     """
+
+    # Perform argument reduction to interval to [-PI, PI] using module
+    x = x % (2 * PI)
+    if x > PI:
+        x -= 2 * PI
+        
+    # Reduce to [-PI/2, PI/2] using symmetry for improving accuracy
+    if x > PI / 2:
+        x = PI - x
+    elif x < -PI / 2:
+        x = -PI - x
+
+    # first term of the MaClaurin series of sin(x)
     sine_value = x
     term_sine = x
 
+    # Add additional terms to the serie
     for k in range(1, n_sum):
         term_sine *= -(x**2)/((2*k+1)*(2*k))
         sine_value += term_sine
@@ -154,6 +234,8 @@ def exp(x:float, n_sum:int=90, tol:float=10**-12)->float:
     float
         Approximation of exp(x).
     """
+    if x<0:
+        return 1/exp(-x)
     exp_value=1.0
     term_exp=1.0
     for k in range(1,n_sum):
@@ -210,8 +292,28 @@ def ln(x: float) -> float:
 
 
 def sqrt(x:float,x_0=None, tol=10**-6, n_max=10)->float:
+    """
+    Compute the square root of x using Newton-Raphson.
+
+    Parameters
+    ----------
+    x : float
+        Point whose square root is going to be computed. It must be >=0
+
+    Returns
+    -------
+    float
+        Approximation of $$\sqrt{x}$$.
+
+    Note
+    ----
+    The method computes $\sqrt{x}$ using Newton-Raphson in the fixed-point formula $y^2-x=0$ 
+    
+    """
     if (x<0):
         raise ValueError(str(x)+" must be a positive value")
+    if (x==0):
+        return 0
     if (x_0 is None):
         x_0=x/2
     return Newton_Raphson(lambda y: y**2-x,lambda y: 2*y, x_0=x_0,tol=tol,n_max=n_max)
@@ -237,8 +339,34 @@ def dotProduct(x:Any, y:Any)->float:
     return x_dot_y
 
 def Newton_Raphson(func,func_prime,x_0:float,tol=10**-6, n_max=10)->float:
+    """
+    Template for Newton-Raphson iterative Method.
+
+    Parameters
+    ----------
+    x_0 : float
+        Initial guess for initiate iterations.
+    func: lambda
+        Lambda funcion which is the function which a root wants to be estimated $f(x)=0$.
+    func_prime: lambda
+        Lambda function which is the derivative of the function f(x)=0 which a root wants to be estimated.
+    tol: float
+        tolerance (precision) of the root estimation.
+    n_max: int
+        Maximum number of iterations for the Newton-Raphson. Method stops once $n_{max}$ is achieved.
+
+    Returns
+    -------
+    float
+        Root estimation of the equation f(x)=0.
+
+    Note
+    ----
+    The method computes $\sqrt{x}$ using Newton-Raphson in the fixed-point formula $y^2-x=0$ 
+    
+    """
     error = 1
-    n_iteration=1
+    n_iteration=0
     while (error>tol and n_iteration < n_max):
         x_1=x_0-func(x_0)/func_prime(x_0)
         error = abs((x_1-x_0)/x_0)
